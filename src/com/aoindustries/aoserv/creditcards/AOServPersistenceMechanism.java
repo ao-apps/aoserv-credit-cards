@@ -85,9 +85,17 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     }
 
     public void updateMaskedCardNumber(Principal principal, CreditCard creditCard, String maskedCardNumber, Locale userLocale) throws SQLException {
-        AOServConnector conn = getAOServConnector(principal);
-
-        throw new RuntimeException("TODO: Implement method");
+        try {
+            AOServConnector conn = getAOServConnector(principal);
+            int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
+            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.creditCards.get(pkey);
+            if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
+            aoservCreditCard.updateCardInfo(maskedCardNumber);
+        } catch(NumberFormatException err) {
+            SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
+            sqlErr.initCause(err);
+            throw sqlErr;
+        }
     }
 
     public void deleteCreditCard(Principal principal, CreditCard creditCard, Locale userLocale) throws SQLException {
