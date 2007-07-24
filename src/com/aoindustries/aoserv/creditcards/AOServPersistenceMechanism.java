@@ -7,11 +7,14 @@ package com.aoindustries.aoserv.creditcards;
  */
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.aoserv.client.Business;
+import com.aoindustries.aoserv.client.BusinessAdministrator;
 import com.aoindustries.aoserv.client.CountryCode;
 import com.aoindustries.aoserv.client.CreditCardProcessor;
 import com.aoindustries.creditcards.CreditCard;
 import com.aoindustries.creditcards.PersistenceMechanism;
 import com.aoindustries.creditcards.Transaction;
+import com.aoindustries.creditcards.TransactionRequest;
+import java.io.IOException;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.SQLException;
@@ -113,13 +116,81 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     }
 
     public String insertTransaction(Principal principal, Group group, Transaction transaction, Locale userLocale) throws SQLException {
+        try {
+            AOServConnector conn = getAOServConnector(principal);
+            Business business = getBusiness(group);
+            String providerId = transaction.getProviderId();
+            CreditCardProcessor processor = conn.creditCardProcessors.get(providerId);
+            if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+providerId);
+            TransactionRequest transactionRequest = transaction.getTransactionRequest();
+            CreditCard creditCard = transaction.getCreditCard();
+            String ccCreatedByName = creditCard.getPrincipalName();
+            BusinessAdministrator ccCreatedBy = conn.businessAdministrators.get(ccCreatedByName);
+            if(ccCreatedBy==null) throw new SQLException("Unable to find BusinessAdministrator: "+ccCreatedByName);
+            String ccBusinessAccounting = creditCard.getGroupName();
+            Business ccBusiness = conn.businesses.get(ccBusinessAccounting);
+            if(ccBusiness==null) throw new SQLException("Unable to find Business: "+ccBusinessAccounting);
+            int pkey = business.addCreditCardTransaction(
+                processor,
+                transactionRequest.getTestMode(),
+                transactionRequest.getDuplicateWindow(),
+                transactionRequest.getOrderNumber(),
+                transactionRequest.getCurrencyCode().name(),
+                transactionRequest.getAmount(),
+                transactionRequest.getTaxAmount(),
+                transactionRequest.getTaxExempt(),
+                transactionRequest.getShippingAmount(),
+                transactionRequest.getDutyAmount(),
+                transactionRequest.getShippingFirstName(),
+                transactionRequest.getShippingLastName(),
+                transactionRequest.getShippingCompanyName(),
+                transactionRequest.getShippingStreetAddress1(),
+                transactionRequest.getShippingStreetAddress2(),
+                transactionRequest.getShippingCity(),
+                transactionRequest.getShippingState(),
+                transactionRequest.getShippingPostalCode(),
+                transactionRequest.getShippingCountryCode(),
+                transactionRequest.getEmailCustomer(),
+                transactionRequest.getMerchantEmail(),
+                transactionRequest.getInvoiceNumber(),
+                transactionRequest.getPurchaseOrderNumber(),
+                transactionRequest.getDescription(),
+                ccCreatedBy,
+                ccBusiness,
+                creditCard.getProviderUniqueId(),
+                creditCard.getMaskedCardNumber(),
+                creditCard.getFirstName(),
+                creditCard.getLastName(),
+                creditCard.getCompanyName(),
+                creditCard.getEmail(),
+                creditCard.getPhone(),
+                creditCard.getFax(),
+                creditCard.getCustomerTaxId(),
+                creditCard.getStreetAddress1(),
+                creditCard.getStreetAddress2(),
+                creditCard.getCity(),
+                creditCard.getState(),
+                creditCard.getPostalCode(),
+                creditCard.getCountryCode(),
+                creditCard.getComments(),
+                System.currentTimeMillis(),
+                conn.getThisBusinessAdministrator()
+            );
+            return Integer.toString(pkey);
+        } catch(IOException err) {
+            SQLException sqlErr = new SQLException();
+            sqlErr.initCause(err);
+            throw sqlErr;
+        }
+    }
+
+    public void saleCompleted(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
         AOServConnector conn = getAOServConnector(principal);
-        Business business = getBusiness(group);
 
         throw new RuntimeException("TODO: Implement method");
     }
 
-    public void updateTransaction(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
+    public void voidCompleted(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
         AOServConnector conn = getAOServConnector(principal);
 
         throw new RuntimeException("TODO: Implement method");
