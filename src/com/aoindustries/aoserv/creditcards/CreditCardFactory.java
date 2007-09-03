@@ -22,8 +22,8 @@ public class CreditCardFactory {
         return new CreditCard(
             userLocale,
             Integer.toString(creditCard.getPKey()),
-            creditCard.getCreatedBy().getUsername().getUsername(),
-            creditCard.getBusiness().getAccounting(),
+            creditCard.getPrincipalName(),
+            creditCard.getGroupName(),
             creditCard.getCreditCardProcessor().getProviderId(),
             creditCard.getProviderUniqueId(),
             null,

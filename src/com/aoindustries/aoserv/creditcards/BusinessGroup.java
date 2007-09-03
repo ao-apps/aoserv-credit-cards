@@ -17,32 +17,34 @@ import java.util.Enumeration;
 final public class BusinessGroup implements Group {
 
     final private Business business;
+    final private String groupName;
 
-    public BusinessGroup(Business business) {
+    public BusinessGroup(Business business, String groupName) {
         this.business = business;
+        this.groupName = groupName;
     }
     
     public boolean equals(Object O) {
-        return
-            O!=null
-            && (O instanceof BusinessGroup)
-            && business.equals(((BusinessGroup)O).business)
-        ;
+        if(O==null || !(O instanceof BusinessGroup)) return false;
+        BusinessGroup other = (BusinessGroup)O;
+        if(!business.equals(other.business)) return false;
+        if(groupName==null) return other.groupName==null;
+        else return groupName.equals(other.groupName);
     }
     
     public String toString() {
-        return business.toString();
+        return getName();
     }
 
     public int hashCode() {
-        return business.hashCode();
+        return business.hashCode()+(groupName==null ? 0 : (groupName.hashCode()*37));
     }
 
     /**
-     * Gets the business accounting code.
+     * Gets the group name.
      */
     public String getName() {
-        return business.getAccounting();
+        return groupName;
     }
 
     /**
@@ -83,5 +85,12 @@ final public class BusinessGroup implements Group {
      */
     public Business getBusiness() {
         return business;
+    }
+    
+    /**
+     * Gets the application-provided group name.
+     */
+    public String getGroupName() {
+        return groupName;
     }
 }
