@@ -7,6 +7,7 @@ package com.aoindustries.aoserv.creditcards;
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.creditcards.CreditCardProcessor;
 import com.aoindustries.creditcards.MerchantServicesProvider;
+import com.aoindustries.creditcards.MerchantServicesProviderFactory;
 import com.aoindustries.util.StringUtility;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -137,6 +138,8 @@ public class CreditCardProcessorFactory {
      * Only one instance of each unique <code>CreditCardProcessor</code> (unique based on providerId, classname and all parameters) will be created.<br>
      * <br>
      * Every processor will use the <code>AOServPersistenceMechanism</code> for its persistence.
+     *
+     * @see  MerchantServicesProviderFactory#getMerchantServicesProvider
      */
     public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.CreditCardProcessor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         // The key in the map
@@ -152,81 +155,17 @@ public class CreditCardProcessorFactory {
         // Now synchronize access to processors
         synchronized(processors) {
             // Look for existing instance
-            CreditCardProcessor processorInstance = (CreditCardProcessor)processors.get(processorKey);
+            CreditCardProcessor processorInstance = processors.get(processorKey);
             if(processorInstance==null) {
-                // Instantiate through reflection
-                Class<? extends MerchantServicesProvider> clazz = Class.forName(selectedCCP.getClassName()).asSubclass(MerchantServicesProvider.class);
+                MerchantServicesProvider provider = MerchantServicesProviderFactory.getMerchantServicesProvider(
+                    selectedCCP.getProviderId(),
+                    selectedCCP.getClassName(),
+                    selectedCCP.getParam1(),
+                    selectedCCP.getParam2(),
+                    selectedCCP.getParam3(),
+                    selectedCCP.getParam4()
+                );
 
-                MerchantServicesProvider provider = null;
-
-                // Try the providerId + 4-parameter constructor
-                try {
-                    Constructor<? extends MerchantServicesProvider> constructor = clazz.getConstructor(String.class, String.class, String.class, String.class, String.class);
-                    provider = constructor.newInstance(selectedCCP.getProviderId(), selectedCCP.getParam1(), selectedCCP.getParam2(), selectedCCP.getParam3(), selectedCCP.getParam4());
-                } catch(NoSuchMethodException err) {
-                    // Fall through to next param set
-                } catch(IllegalAccessException err) {
-                    // Fall through to next param set
-                } catch(InstantiationException err) {
-                    // Fall through to next param set
-                } catch(InvocationTargetException err) {
-                    // Fall through to next param set
-                }
-
-                if(provider==null) {
-                    // Try the providerId + 3-parameter constructor
-                    try {
-                        Constructor<? extends MerchantServicesProvider> constructor = clazz.getConstructor(String.class, String.class, String.class, String.class);
-                        provider = constructor.newInstance(selectedCCP.getProviderId(), selectedCCP.getParam1(), selectedCCP.getParam2(), selectedCCP.getParam3());
-                    } catch(NoSuchMethodException err) {
-                        // Fall through to next param set
-                    } catch(IllegalAccessException err) {
-                        // Fall through to next param set
-                    } catch(InstantiationException err) {
-                        // Fall through to next param set
-                    } catch(InvocationTargetException err) {
-                        // Fall through to next param set
-                    }
-                }
-
-                if(provider==null) {
-                    // Try the providerId + 2-parameter constructor
-                    try {
-                        Constructor<? extends MerchantServicesProvider> constructor = clazz.getConstructor(String.class, String.class, String.class);
-                        provider = constructor.newInstance(selectedCCP.getProviderId(), selectedCCP.getParam1(), selectedCCP.getParam2());
-                    } catch(NoSuchMethodException err) {
-                        // Fall through to next param set
-                    } catch(IllegalAccessException err) {
-                        // Fall through to next param set
-                    } catch(InstantiationException err) {
-                        // Fall through to next param set
-                    } catch(InvocationTargetException err) {
-                        // Fall through to next param set
-                    }
-                }
-
-                if(provider==null) {
-                    // Try the providerId + 1-parameter constructor
-                    try {
-                        Constructor<? extends MerchantServicesProvider> constructor = clazz.getConstructor(String.class, String.class);
-                        provider = constructor.newInstance(selectedCCP.getProviderId(), selectedCCP.getParam1());
-                    } catch(NoSuchMethodException err) {
-                        // Fall through to next param set
-                    } catch(IllegalAccessException err) {
-                        // Fall through to next param set
-                    } catch(InstantiationException err) {
-                        // Fall through to next param set
-                    } catch(InvocationTargetException err) {
-                        // Fall through to next param set
-                    }
-                }
-
-                if(provider==null) {
-                    // Try the providerId constructor, if fails allow exception to go out of this method
-                    Constructor<? extends MerchantServicesProvider> constructor = clazz.getConstructor(String.class);
-                    provider = constructor.newInstance(selectedCCP.getProviderId());
-                }
-                
                 // Create and add to cache
                 processorInstance = new CreditCardProcessor(provider, AOServPersistenceMechanism.getInstance());
                 processors.put(processorKey, processorInstance);

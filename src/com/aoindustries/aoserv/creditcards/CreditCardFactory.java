@@ -21,7 +21,7 @@ public class CreditCardFactory {
     public static CreditCard getCreditCard(com.aoindustries.aoserv.client.CreditCard creditCard, Locale userLocale) {
         return new CreditCard(
             userLocale,
-            Integer.toString(creditCard.getPKey()),
+            Integer.toString(creditCard.getPkey()),
             creditCard.getPrincipalName(),
             creditCard.getGroupName(),
             creditCard.getCreditCardProcessor().getProviderId(),
