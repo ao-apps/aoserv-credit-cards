@@ -122,6 +122,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
             sqlErr.initCause(err);
             throw sqlErr;
+        } catch(IOException err) {
+            SQLException sqlErr = new SQLException();
+            sqlErr.initCause(err);
+            throw sqlErr;
         }
     }
 
@@ -135,6 +139,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             aoservCreditCard.updateCardExpiration(expirationMonth, expirationYear);
         } catch(NumberFormatException err) {
             SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
+            sqlErr.initCause(err);
+            throw sqlErr;
+        } catch(IOException err) {
+            SQLException sqlErr = new SQLException();
             sqlErr.initCause(err);
             throw sqlErr;
         }
