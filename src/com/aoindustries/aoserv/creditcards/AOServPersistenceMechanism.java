@@ -267,7 +267,6 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public void saleCompleted(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
         try {
-            long currentTime = System.currentTimeMillis();
             AOServConnector conn = getAOServConnector(principal);
             String providerId = transaction.getProviderId();
             CreditCardProcessor processor = conn.creditCardProcessors.get(providerId);
@@ -335,9 +334,50 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
      */
     @Override
     public void authorizeCompleted(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
-        AOServConnector conn = getAOServConnector(principal);
+        try {
+            AOServConnector conn = getAOServConnector(principal);
+            String providerId = transaction.getProviderId();
+            CreditCardProcessor processor = conn.creditCardProcessors.get(providerId);
+            if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+providerId);
+            // Get the stored creditCardTransaction
+            int ccTransactionId = Integer.parseInt(transaction.getPersistenceUniqueId());
+            CreditCardTransaction ccTransaction = conn.getCreditCardTransactions().get(ccTransactionId);
+            if(ccTransaction==null) throw new SQLException("Unable to find CreditCardTransaction: "+ccTransactionId);
+            if(!ccTransaction.getStatus().equals(Transaction.Status.PROCESSING.name())) throw new SQLException("CreditCardTransaction #"+ccTransactionId+" must have status "+Transaction.Status.PROCESSING.name()+", its current status is "+ccTransaction.getStatus());
 
-        throw new RuntimeException("TODO: Implement method");
+            AuthorizationResult authorizationResult = transaction.getAuthorizationResult();
+            TransactionResult.CommunicationResult authorizationCommunicationResult = authorizationResult.getCommunicationResult();
+            TransactionResult.ErrorCode authorizationErrorCode = authorizationResult.getErrorCode();
+            AuthorizationResult.ApprovalResult approvalResult = authorizationResult.getApprovalResult();
+            AuthorizationResult.DeclineReason declineReason = authorizationResult.getDeclineReason();
+            AuthorizationResult.ReviewReason reviewReason = authorizationResult.getReviewReason();
+            AuthorizationResult.CvvResult cvvResult = authorizationResult.getCvvResult();
+            AuthorizationResult.AvsResult avsResult = authorizationResult.getAvsResult();
+
+            ccTransaction.authorizeCompleted(
+                authorizationCommunicationResult==null ? null : authorizationCommunicationResult.name(),
+                authorizationResult.getProviderErrorCode(),
+                authorizationErrorCode==null ? null : authorizationErrorCode.name(),
+                authorizationResult.getProviderErrorMessage(),
+                authorizationResult.getProviderUniqueId(),
+                authorizationResult.getProviderApprovalResult(),
+                approvalResult==null ? null : approvalResult.name(),
+                authorizationResult.getProviderDeclineReason(),
+                declineReason==null ? null : declineReason.name(),
+                authorizationResult.getProviderReviewReason(),
+                reviewReason==null ? null : reviewReason.name(),
+                authorizationResult.getProviderCvvResult(),
+                cvvResult==null ? null : cvvResult.name(),
+                authorizationResult.getProviderAvsResult(),
+                avsResult==null ? null : avsResult.name(),
+                authorizationResult.getApprovalCode(),
+                transaction.getStatus().name()
+            );
+        } catch(IOException err) {
+            SQLException sqlErr = new SQLException();
+            sqlErr.initCause(err);
+            throw sqlErr;
+        }
     }
 
     @Override
