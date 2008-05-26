@@ -324,6 +324,22 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         }
     }
 
+    /**
+     * Stores the results of an authorize transaction:
+     * <ol>
+     *   <li>authorizationResult</li>
+     *   <li>status</li>
+     * </ol>
+     *
+     * The current status must be PROCESSING.
+     */
+    @Override
+    public void authorizeCompleted(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
+        AOServConnector conn = getAOServConnector(principal);
+
+        throw new RuntimeException("TODO: Implement method");
+    }
+
     @Override
     public void voidCompleted(Principal principal, Transaction transaction, Locale userLocale) throws SQLException {
         AOServConnector conn = getAOServConnector(principal);
