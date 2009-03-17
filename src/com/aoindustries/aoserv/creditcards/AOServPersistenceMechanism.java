@@ -75,39 +75,43 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 
     @Override
     public String storeCreditCard(Principal principal, CreditCard creditCard, Locale userLocale) throws SQLException {
-        AOServConnector conn = getAOServConnector(principal);
-        String principalName = getPrincipalName(principal);
-        Business business = conn.businesses.get(creditCard.getGroupName());
-        if(business==null) throw new SQLException("Unable to find Business: "+creditCard.getGroupName());
-        CreditCardProcessor processor = conn.creditCardProcessors.get(creditCard.getProviderId());
-        if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+creditCard.getProviderId());
-        CountryCode countryCode = conn.countryCodes.get(creditCard.getCountryCode());
-        if(countryCode==null) throw new SQLException("Unable to find CountryCode: "+creditCard.getCountryCode());
-        int pkey = business.addCreditCard(
-            processor,
-            creditCard.getGroupName(),
-            creditCard.getMaskedCardNumber(),
-            creditCard.getProviderUniqueId(),
-            creditCard.getFirstName(),
-            creditCard.getLastName(),
-            creditCard.getCompanyName(),
-            creditCard.getEmail(),
-            creditCard.getPhone(),
-            creditCard.getFax(),
-            creditCard.getCustomerTaxId(),
-            creditCard.getStreetAddress1(),
-            creditCard.getStreetAddress2(),
-            creditCard.getCity(),
-            creditCard.getState(),
-            creditCard.getPostalCode(),
-            countryCode,
-            principalName,
-            creditCard.getComments(),
-            creditCard.getCardNumber(),
-            creditCard.getExpirationMonth(),
-            creditCard.getExpirationYear()
-        );
-        return Integer.toString(pkey);
+        try {
+            AOServConnector conn = getAOServConnector(principal);
+            String principalName = getPrincipalName(principal);
+            Business business = conn.businesses.get(creditCard.getGroupName());
+            if(business==null) throw new SQLException("Unable to find Business: "+creditCard.getGroupName());
+            CreditCardProcessor processor = conn.creditCardProcessors.get(creditCard.getProviderId());
+            if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+creditCard.getProviderId());
+            CountryCode countryCode = conn.countryCodes.get(creditCard.getCountryCode());
+            if(countryCode==null) throw new SQLException("Unable to find CountryCode: "+creditCard.getCountryCode());
+            int pkey = business.addCreditCard(
+                processor,
+                creditCard.getGroupName(),
+                creditCard.getMaskedCardNumber(),
+                creditCard.getProviderUniqueId(),
+                creditCard.getFirstName(),
+                creditCard.getLastName(),
+                creditCard.getCompanyName(),
+                creditCard.getEmail(),
+                creditCard.getPhone(),
+                creditCard.getFax(),
+                creditCard.getCustomerTaxId(),
+                creditCard.getStreetAddress1(),
+                creditCard.getStreetAddress2(),
+                creditCard.getCity(),
+                creditCard.getState(),
+                creditCard.getPostalCode(),
+                countryCode,
+                principalName,
+                creditCard.getComments(),
+                creditCard.getCardNumber(),
+                creditCard.getExpirationMonth(),
+                creditCard.getExpirationYear()
+            );
+            return Integer.toString(pkey);
+        } catch(IOException err) {
+            throw new SQLException(err);
+        }
     }
 
     @Override
@@ -160,6 +164,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
             sqlErr.initCause(err);
             throw sqlErr;
+        } catch(IOException err) {
+            throw new SQLException(err);
         }
     }
 

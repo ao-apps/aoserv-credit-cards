@@ -9,8 +9,9 @@ import com.aoindustries.creditcards.CreditCardProcessor;
 import com.aoindustries.creditcards.MerchantServicesProvider;
 import com.aoindustries.creditcards.MerchantServicesProviderFactory;
 import com.aoindustries.util.StringUtility;
-import java.lang.reflect.Constructor;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class CreditCardProcessorFactory {
             this.param4 = param4;
         }
         
+        @Override
         public int hashCode() {
             return
                 providerId.hashCode()
@@ -61,6 +63,7 @@ public class CreditCardProcessorFactory {
             ;
         }
         
+        @Override
         public boolean equals(Object O) {
             if(O==null) return false;
             if(!(O instanceof ProcessorKey)) return false;
@@ -90,7 +93,7 @@ public class CreditCardProcessorFactory {
      *
      * @return  the processor or <code>null</code> if none found
      */
-    public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
         // Select the aoserv-client processor before synchronizing on processors
         List<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getPackage().getBusiness().getCreditCardProcessors();
         // Count the total weight of enabled processors
@@ -115,7 +118,7 @@ public class CreditCardProcessorFactory {
         } else {
             // Pick a random one based on this weight
             selectedCCP = null;
-            int randomPosition = conn.getRandom().nextInt(totalWeight);
+            int randomPosition = AOServConnector.getRandom().nextInt(totalWeight);
             int weightSoFar = 0;
             for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
                 if(ccp.getEnabled() && ccp.getWeight()>0) {

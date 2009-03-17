@@ -5,7 +5,9 @@ package com.aoindustries.aoserv.creditcards;
  * All rights reserved.
  */
 import com.aoindustries.aoserv.client.AOServConnector;
+import com.aoindustries.util.WrappedException;
 import java.security.Principal;
+import java.sql.SQLException;
 
 /**
  * Uses an <code>AOServConnector</code> as a Java <code>Principal</code>.
@@ -22,28 +24,40 @@ final public class AOServConnectorPrincipal implements Principal {
         this.principalName = principalName;
     }
     
+    @Override
     public boolean equals(Object O) {
-        if(O==null || !(O instanceof AOServConnectorPrincipal)) return false;
-        AOServConnectorPrincipal other = (AOServConnectorPrincipal)O;
-        if(!conn.getThisBusinessAdministrator().equals(other.getAOServConnector().getThisBusinessAdministrator())) return false;
-        if(principalName==null) {
-            return other.principalName==null;
-        } else {
-            return principalName.equals(other.principalName);
+        try {
+            if(O==null || !(O instanceof AOServConnectorPrincipal)) return false;
+            AOServConnectorPrincipal other = (AOServConnectorPrincipal)O;
+            if(!conn.getThisBusinessAdministrator().equals(other.getAOServConnector().getThisBusinessAdministrator())) return false;
+            if(principalName==null) {
+                return other.principalName==null;
+            } else {
+                return principalName.equals(other.principalName);
+            }
+        } catch(SQLException err) {
+            throw new WrappedException(err);
         }
     }
 
+    @Override
     public String toString() {
         return getName();
     }
 
+    @Override
     public int hashCode() {
-        return conn.getThisBusinessAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
+        try {
+            return conn.getThisBusinessAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
+        } catch(SQLException err) {
+            throw new WrappedException(err);
+        }
     }
 
     /**
      * Gets the principal name.
      */
+    @Override
     public String getName() {
         return principalName;
     }

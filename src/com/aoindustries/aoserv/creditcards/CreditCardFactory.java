@@ -4,8 +4,9 @@ package com.aoindustries.aoserv.creditcards;
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
-import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.creditcards.CreditCard;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Locale;
 
 /**
@@ -18,7 +19,7 @@ public class CreditCardFactory {
     /**
      * Creates processor CreditCard beans from AOServ CreditCards.
      */
-    public static CreditCard getCreditCard(com.aoindustries.aoserv.client.CreditCard creditCard, Locale userLocale) {
+    public static CreditCard getCreditCard(com.aoindustries.aoserv.client.CreditCard creditCard, Locale userLocale) throws SQLException, IOException {
         return new CreditCard(
             userLocale,
             Integer.toString(creditCard.getPkey()),
