@@ -6,6 +6,7 @@ package com.aoindustries.aoserv.creditcards;
  */
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.util.WrappedException;
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
 
@@ -35,6 +36,8 @@ final public class AOServConnectorPrincipal implements Principal {
             } else {
                 return principalName.equals(other.principalName);
             }
+        } catch(IOException err) {
+            throw new WrappedException(err);
         } catch(SQLException err) {
             throw new WrappedException(err);
         }
@@ -49,6 +52,8 @@ final public class AOServConnectorPrincipal implements Principal {
     public int hashCode() {
         try {
             return conn.getThisBusinessAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
+        } catch(IOException err) {
+            throw new WrappedException(err);
         } catch(SQLException err) {
             throw new WrappedException(err);
         }

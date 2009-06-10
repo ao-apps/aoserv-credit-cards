@@ -78,11 +78,11 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             String principalName = getPrincipalName(principal);
-            Business business = conn.businesses.get(creditCard.getGroupName());
+            Business business = conn.getBusinesses().get(creditCard.getGroupName());
             if(business==null) throw new SQLException("Unable to find Business: "+creditCard.getGroupName());
-            CreditCardProcessor processor = conn.creditCardProcessors.get(creditCard.getProviderId());
+            CreditCardProcessor processor = conn.getCreditCardProcessors().get(creditCard.getProviderId());
             if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+creditCard.getProviderId());
-            CountryCode countryCode = conn.countryCodes.get(creditCard.getCountryCode());
+            CountryCode countryCode = conn.getCountryCodes().get(creditCard.getCountryCode());
             if(countryCode==null) throw new SQLException("Unable to find CountryCode: "+creditCard.getCountryCode());
             int pkey = business.addCreditCard(
                 processor,
@@ -119,7 +119,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.creditCards.get(pkey);
+            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
             aoservCreditCard.updateCardNumberAndExpiration(maskedCardNumber, cardNumber, expirationMonth, expirationYear);
         } catch(NumberFormatException err) {
@@ -138,7 +138,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.creditCards.get(pkey);
+            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
             aoservCreditCard.updateCardExpiration(expirationMonth, expirationYear);
         } catch(NumberFormatException err) {
@@ -157,7 +157,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.creditCards.get(pkey);
+            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
             aoservCreditCard.remove();
         } catch(NumberFormatException err) {
@@ -177,7 +177,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             Business business = getBusiness(group);
             String groupName = getGroupName(group);
             String providerId = transaction.getProviderId();
-            CreditCardProcessor processor = conn.creditCardProcessors.get(providerId);
+            CreditCardProcessor processor = conn.getCreditCardProcessors().get(providerId);
             if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+providerId);
             TransactionRequest transactionRequest = transaction.getTransactionRequest();
             CreditCard creditCard = transaction.getCreditCard();
@@ -191,7 +191,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                     ccBusiness = business;
                 } else {
                     int ccPersistIdInt = Integer.parseInt(ccPersistId);
-                    com.aoindustries.aoserv.client.CreditCard storedCard = conn.creditCards.get(ccPersistIdInt);
+                    com.aoindustries.aoserv.client.CreditCard storedCard = conn.getCreditCards().get(ccPersistIdInt);
                     if(storedCard==null) throw new SQLException("Unable to find CreditCard: "+ccPersistIdInt);
                     creditCardCreatedBy = storedCard.getCreatedBy();
                     if(creditCardCreatedBy==null) {
@@ -275,7 +275,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             String providerId = transaction.getProviderId();
-            CreditCardProcessor processor = conn.creditCardProcessors.get(providerId);
+            CreditCardProcessor processor = conn.getCreditCardProcessors().get(providerId);
             if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+providerId);
             // Get the stored creditCardTransaction
             int ccTransactionId = Integer.parseInt(transaction.getPersistenceUniqueId());
@@ -343,7 +343,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             String providerId = transaction.getProviderId();
-            CreditCardProcessor processor = conn.creditCardProcessors.get(providerId);
+            CreditCardProcessor processor = conn.getCreditCardProcessors().get(providerId);
             if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+providerId);
             // Get the stored creditCardTransaction
             int ccTransactionId = Integer.parseInt(transaction.getPersistenceUniqueId());
