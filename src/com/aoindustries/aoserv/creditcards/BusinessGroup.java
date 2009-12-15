@@ -79,7 +79,7 @@ final public class BusinessGroup implements Group {
         try {
             if(user instanceof AOServConnectorPrincipal) {
                 AOServConnectorPrincipal acp = (AOServConnectorPrincipal)user;
-                return acp.getAOServConnector().getThisBusinessAdministrator().getUsername().getPackage().getBusiness().isBusinessOrParentOf(business);
+                return acp.getAOServConnector().getThisBusinessAdministrator().getUsername().getBusiness().isBusinessOrParentOf(business);
             }
             return false;
         } catch(IOException err) {
