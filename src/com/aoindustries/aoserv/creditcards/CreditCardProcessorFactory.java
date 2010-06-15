@@ -1,20 +1,22 @@
 package com.aoindustries.aoserv.creditcards;
 /*
- * Copyright 2007-2009 by AO Industries, Inc.,
+ * Copyright 2007-2010 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 import com.aoindustries.aoserv.client.AOServConnector;
+import com.aoindustries.aoserv.client.IndexedSet;
 import com.aoindustries.creditcards.CreditCardProcessor;
 import com.aoindustries.creditcards.MerchantServicesProvider;
 import com.aoindustries.creditcards.MerchantServicesProviderFactory;
 import com.aoindustries.util.StringUtility;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Creates instances of <code>CreditCardProcessor</code>s based on the processor
@@ -81,6 +83,8 @@ public class CreditCardProcessorFactory {
 
     final private static Map<ProcessorKey,CreditCardProcessor> processors = new HashMap<ProcessorKey,CreditCardProcessor>();
 
+    private static final Random random = new SecureRandom();
+
     /**
      * Gets an enabled <code>CreditCardProcessor</code> from the list of processors for the business
      * of the provided <code>AOServConnector</code>.  When multiple processors are enabled, those with
@@ -95,7 +99,7 @@ public class CreditCardProcessorFactory {
      */
     public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
         // Select the aoserv-client processor before synchronizing on processors
-        List<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getBusiness().getCreditCardProcessors();
+        IndexedSet<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getBusiness().getCreditCardProcessors();
         // Count the total weight of enabled processors
         int totalEnabledProcessors = 0;
         com.aoindustries.aoserv.client.CreditCardProcessor firstCCP = null;
@@ -118,7 +122,7 @@ public class CreditCardProcessorFactory {
         } else {
             // Pick a random one based on this weight
             selectedCCP = null;
-            int randomPosition = AOServConnector.getRandom().nextInt(totalWeight);
+            int randomPosition = random.nextInt(totalWeight);
             int weightSoFar = 0;
             for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
                 if(ccp.getEnabled() && ccp.getWeight()>0) {
