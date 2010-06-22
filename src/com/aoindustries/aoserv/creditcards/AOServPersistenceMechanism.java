@@ -203,7 +203,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                 transactionRequest.getTestMode(),
                 transactionRequest.getDuplicateWindow(),
                 transactionRequest.getOrderNumber(),
-                transactionRequest.getCurrencyCode().name(),
+                transactionRequest.getCurrency().getCurrencyCode(),
                 transactionRequest.getAmount(),
                 transactionRequest.getTaxAmount(),
                 transactionRequest.getTaxExempt(),
