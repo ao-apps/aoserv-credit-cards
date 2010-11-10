@@ -1,16 +1,16 @@
-package com.aoindustries.aoserv.creditcards;
-
 /*
  * Copyright 2007-2010 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
+package com.aoindustries.aoserv.creditcards;
+
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.aoserv.client.Business;
 import com.aoindustries.aoserv.client.BusinessAdministrator;
-import com.aoindustries.aoserv.client.CountryCode;
 import com.aoindustries.aoserv.client.CreditCardProcessor;
 import com.aoindustries.aoserv.client.CreditCardTransaction;
+import com.aoindustries.aoserv.client.command.AddCreditCardCommand;
 import com.aoindustries.aoserv.client.validator.AccountingCode;
 import com.aoindustries.aoserv.client.validator.Email;
 import com.aoindustries.aoserv.client.validator.ValidationException;
@@ -79,35 +79,33 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     public String storeCreditCard(Principal principal, CreditCard creditCard) throws SQLException {
         try {
             AOServConnector<?,?> conn = getAOServConnector(principal);
-            String principalName = getPrincipalName(principal);
-            Business business = conn.getBusinesses().get(AccountingCode.valueOf(creditCard.getGroupName()));
-            CreditCardProcessor processor = conn.getCreditCardProcessors().get(creditCard.getProviderId());
-            CountryCode countryCode = conn.getCountryCodes().get(creditCard.getCountryCode());
-            int pkey = business.addCreditCard(
-                processor,
-                creditCard.getGroupName(),
-                creditCard.getMaskedCardNumber(),
-                creditCard.getProviderUniqueId(),
-                creditCard.getFirstName(),
-                creditCard.getLastName(),
-                creditCard.getCompanyName(),
-                Email.valueOf(creditCard.getEmail()),
-                creditCard.getPhone(),
-                creditCard.getFax(),
-                creditCard.getCustomerTaxId(),
-                creditCard.getStreetAddress1(),
-                creditCard.getStreetAddress2(),
-                creditCard.getCity(),
-                creditCard.getState(),
-                creditCard.getPostalCode(),
-                countryCode,
-                principalName,
-                creditCard.getComments(),
-                creditCard.getCardNumber(),
-                creditCard.getExpirationMonth(),
-                creditCard.getExpirationYear()
+            return Integer.toString(
+                new AddCreditCardCommand(
+                    conn.getCreditCardProcessors().get(creditCard.getProviderId()),
+                    conn.getBusinesses().get(AccountingCode.valueOf(creditCard.getGroupName())),
+                    creditCard.getGroupName(),
+                    creditCard.getMaskedCardNumber(),
+                    creditCard.getProviderUniqueId(),
+                    creditCard.getFirstName(),
+                    creditCard.getLastName(),
+                    creditCard.getCompanyName(),
+                    Email.valueOf(creditCard.getEmail()),
+                    creditCard.getPhone(),
+                    creditCard.getFax(),
+                    creditCard.getCustomerTaxId(),
+                    creditCard.getStreetAddress1(),
+                    creditCard.getStreetAddress2(),
+                    creditCard.getCity(),
+                    creditCard.getState(),
+                    creditCard.getPostalCode(),
+                    conn.getCountryCodes().get(creditCard.getCountryCode()),
+                    getPrincipalName(principal),
+                    creditCard.getComments(),
+                    creditCard.getCardNumber(),
+                    creditCard.getExpirationMonth(),
+                    creditCard.getExpirationYear()
+                ).execute(conn)
             );
-            return Integer.toString(pkey);
         } catch(ValidationException err) {
             throw new SQLException(err);
         } catch(IOException err) {
