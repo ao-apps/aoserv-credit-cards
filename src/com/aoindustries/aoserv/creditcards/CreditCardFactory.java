@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class CreditCardFactory {
 
     /**
-     * Creates processor CreditCard beans from AOServ CreditCards.
+     * Creates processor CreditCard from AOServ CreditCards.
      */
     public static CreditCard getCreditCard(com.aoindustries.aoserv.client.CreditCard creditCard) throws SQLException, IOException {
         return new CreditCard(
