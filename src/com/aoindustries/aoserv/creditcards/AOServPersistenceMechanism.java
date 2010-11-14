@@ -51,7 +51,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     private AOServPersistenceMechanism() {
     }
 
-    private static AOServConnector<?,?> getAOServConnector(Principal principal) throws SQLException {
+    private static AOServConnector getAOServConnector(Principal principal) throws SQLException {
         if(principal==null) throw new SQLException("principal is null");
         if(!(principal instanceof AOServConnectorPrincipal)) throw new SQLException("principal is not a AOServConnectorPrincipal: "+principal.getName());
         return ((AOServConnectorPrincipal)principal).getAOServConnector();
@@ -78,7 +78,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public String storeCreditCard(Principal principal, CreditCard creditCard) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             return Integer.toString(
                 new AddCreditCardCommand(
                     conn.getCreditCardProcessors().get(creditCard.getProviderId()),
@@ -116,7 +116,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public void updateCardNumber(Principal principal, CreditCard creditCard, String maskedCardNumber, String cardNumber, byte expirationMonth, short expirationYear) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             aoservCreditCard.updateCardNumberAndExpiration(maskedCardNumber, cardNumber, expirationMonth, expirationYear);
@@ -134,7 +134,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public void updateExpiration(Principal principal, CreditCard creditCard, byte expirationMonth, short expirationYear) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             aoservCreditCard.updateCardExpiration(expirationMonth, expirationYear);
@@ -152,7 +152,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public void deleteCreditCard(Principal principal, CreditCard creditCard) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             aoservCreditCard.remove();
@@ -168,7 +168,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public String insertTransaction(Principal principal, Group group, Transaction transaction) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             String principalName = getPrincipalName(principal);
             Business business = getBusiness(group);
             String groupName = getGroupName(group);
@@ -267,7 +267,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public void saleCompleted(Principal principal, Transaction transaction) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             String providerId = transaction.getProviderId();
             CreditCardProcessor processor = conn.getCreditCardProcessors().get(providerId);
             // Get the stored creditCardTransaction
@@ -333,7 +333,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     @Override
     public void authorizeCompleted(Principal principal, Transaction transaction) throws SQLException {
         try {
-            AOServConnector<?,?> conn = getAOServConnector(principal);
+            AOServConnector conn = getAOServConnector(principal);
             String providerId = transaction.getProviderId();
             CreditCardProcessor processor = conn.getCreditCardProcessors().get(providerId);
             // Get the stored creditCardTransaction
@@ -378,7 +378,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 
     @Override
     public void voidCompleted(Principal principal, Transaction transaction) throws SQLException {
-        AOServConnector<?,?> conn = getAOServConnector(principal);
+        AOServConnector conn = getAOServConnector(principal);
 
         throw new RuntimeException("TODO: Implement method");
     }

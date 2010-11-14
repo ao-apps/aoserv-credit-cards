@@ -17,10 +17,10 @@ import java.security.Principal;
  */
 final public class AOServConnectorPrincipal implements Principal {
 
-    final private AOServConnector<?,?> conn;
+    final private AOServConnector conn;
     final private String principalName;
 
-    public AOServConnectorPrincipal(AOServConnector<?,?> conn, String principalName) {
+    public AOServConnectorPrincipal(AOServConnector conn, String principalName) {
         this.conn = conn;
         this.principalName = principalName;
     }
@@ -66,7 +66,7 @@ final public class AOServConnectorPrincipal implements Principal {
     /**
      * Gets the connector.
      */
-    public AOServConnector<?,?> getAOServConnector() {
+    public AOServConnector getAOServConnector() {
         return conn;
     }
     

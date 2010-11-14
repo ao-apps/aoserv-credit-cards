@@ -97,7 +97,7 @@ public class CreditCardProcessorFactory {
      *
      * @return  the processor or <code>null</code> if none found
      */
-    public static CreditCardProcessor getCreditCardProcessor(AOServConnector<?,?> conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
+    public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
         // Select the aoserv-client processor before synchronizing on processors
         IndexedSet<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getBusiness().getCreditCardProcessors();
         // Count the total weight of enabled processors
