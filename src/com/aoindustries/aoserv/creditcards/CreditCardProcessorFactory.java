@@ -1,9 +1,10 @@
-package com.aoindustries.aoserv.creditcards;
 /*
  * Copyright 2007-2011 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
+package com.aoindustries.aoserv.creditcards;
+
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.aoserv.client.IndexedSet;
 import com.aoindustries.creditcards.CreditCardProcessor;
@@ -105,7 +106,7 @@ public class CreditCardProcessorFactory {
         com.aoindustries.aoserv.client.CreditCardProcessor firstCCP = null;
         int totalWeight = 0;
         for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
-            if(ccp.getEnabled() && ccp.getWeight()>0) {
+            if(ccp.isEnabled() && ccp.getWeight()>0) {
                 totalEnabledProcessors++;
                 if(firstCCP==null) firstCCP = ccp;
                 totalWeight += ccp.getWeight();
@@ -125,7 +126,7 @@ public class CreditCardProcessorFactory {
             int randomPosition = random.nextInt(totalWeight);
             int weightSoFar = 0;
             for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
-                if(ccp.getEnabled() && ccp.getWeight()>0) {
+                if(ccp.isEnabled() && ccp.getWeight()>0) {
                     weightSoFar += ccp.getWeight();
                     if(weightSoFar>randomPosition) {
                         selectedCCP = ccp;

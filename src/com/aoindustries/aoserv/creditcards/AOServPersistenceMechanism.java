@@ -11,6 +11,12 @@ import com.aoindustries.aoserv.client.BusinessAdministrator;
 import com.aoindustries.aoserv.client.CreditCardProcessor;
 import com.aoindustries.aoserv.client.CreditCardTransaction;
 import com.aoindustries.aoserv.client.command.AddCreditCardCommand;
+import com.aoindustries.aoserv.client.command.AddCreditCardTransactionCommand;
+import com.aoindustries.aoserv.client.command.AuthorizeCompletedCommand;
+import com.aoindustries.aoserv.client.command.RemoveCreditCardCommand;
+import com.aoindustries.aoserv.client.command.SaleCompletedCommand;
+import com.aoindustries.aoserv.client.command.UpdateCardExpirationCommand;
+import com.aoindustries.aoserv.client.command.UpdateCardNumberAndExpirationCommand;
 import com.aoindustries.aoserv.client.validator.AccountingCode;
 import com.aoindustries.aoserv.client.validator.Email;
 import com.aoindustries.aoserv.client.validator.ValidationException;
@@ -21,10 +27,12 @@ import com.aoindustries.creditcards.PersistenceMechanism;
 import com.aoindustries.creditcards.Transaction;
 import com.aoindustries.creditcards.TransactionRequest;
 import com.aoindustries.creditcards.TransactionResult;
-import java.io.IOException;
+import com.aoindustries.lang.NotImplementedException;
+import java.rmi.RemoteException;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * Stores the information in the AOServ system.  The principal sent in to the
@@ -108,26 +116,22 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             );
         } catch(ValidationException err) {
             throw new SQLException(err);
-        } catch(IOException err) {
+        } catch(RemoteException err) {
             throw new SQLException(err);
         }
     }
 
     @Override
-    public void updateCardNumber(Principal principal, CreditCard creditCard, String maskedCardNumber, String cardNumber, byte expirationMonth, short expirationYear) throws SQLException {
+    public void updateCardNumber(Principal principal, CreditCard creditCard, String cardNumber, byte expirationMonth, short expirationYear) throws SQLException {
         try {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
-            aoservCreditCard.updateCardNumberAndExpiration(maskedCardNumber, cardNumber, expirationMonth, expirationYear);
+            new UpdateCardNumberAndExpirationCommand(aoservCreditCard, cardNumber, expirationMonth, expirationYear).execute(conn);
         } catch(NumberFormatException err) {
-            SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-            sqlErr.initCause(err);
-            throw sqlErr;
-        } catch(IOException err) {
-            SQLException sqlErr = new SQLException();
-            sqlErr.initCause(err);
-            throw sqlErr;
+            throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+        } catch(RemoteException err) {
+            throw new SQLException(err);
         }
     }
 
@@ -137,15 +141,11 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
-            aoservCreditCard.updateCardExpiration(expirationMonth, expirationYear);
+            new UpdateCardExpirationCommand(aoservCreditCard, expirationMonth, expirationYear).execute(conn);
         } catch(NumberFormatException err) {
-            SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-            sqlErr.initCause(err);
-            throw sqlErr;
-        } catch(IOException err) {
-            SQLException sqlErr = new SQLException();
-            sqlErr.initCause(err);
-            throw sqlErr;
+            throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+        } catch(RemoteException err) {
+            throw new SQLException(err);
         }
     }
 
@@ -155,12 +155,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
-            aoservCreditCard.remove();
+            new RemoveCreditCardCommand(aoservCreditCard).execute(conn);
         } catch(NumberFormatException err) {
-            SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-            sqlErr.initCause(err);
-            throw sqlErr;
-        } catch(IOException err) {
+            throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+        } catch(RemoteException err) {
             throw new SQLException(err);
         }
     }
@@ -195,60 +193,60 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                     ccBusiness = storedCard.getBusiness();
                 }
             }
-            int pkey = business.addCreditCardTransaction(
-                processor,
-                groupName,
-                transactionRequest.getTestMode(),
-                transactionRequest.getDuplicateWindow(),
-                transactionRequest.getOrderNumber(),
-                transactionRequest.getCurrency().getCurrencyCode(),
-                transactionRequest.getAmount(),
-                transactionRequest.getTaxAmount(),
-                transactionRequest.getTaxExempt(),
-                transactionRequest.getShippingAmount(),
-                transactionRequest.getDutyAmount(),
-                transactionRequest.getShippingFirstName(),
-                transactionRequest.getShippingLastName(),
-                transactionRequest.getShippingCompanyName(),
-                transactionRequest.getShippingStreetAddress1(),
-                transactionRequest.getShippingStreetAddress2(),
-                transactionRequest.getShippingCity(),
-                transactionRequest.getShippingState(),
-                transactionRequest.getShippingPostalCode(),
-                transactionRequest.getShippingCountryCode(),
-                transactionRequest.getEmailCustomer(),
-                transactionRequest.getMerchantEmail(),
-                transactionRequest.getInvoiceNumber(),
-                transactionRequest.getPurchaseOrderNumber(),
-                transactionRequest.getDescription(),
-                creditCardCreatedBy,
-                creditCard.getPrincipalName(),
-                ccBusiness,
-                creditCard.getGroupName(),
-                creditCard.getProviderUniqueId(),
-                creditCard.getMaskedCardNumber(),
-                creditCard.getFirstName(),
-                creditCard.getLastName(),
-                creditCard.getCompanyName(),
-                creditCard.getEmail(),
-                creditCard.getPhone(),
-                creditCard.getFax(),
-                creditCard.getCustomerTaxId(),
-                creditCard.getStreetAddress1(),
-                creditCard.getStreetAddress2(),
-                creditCard.getCity(),
-                creditCard.getState(),
-                creditCard.getPostalCode(),
-                creditCard.getCountryCode(),
-                creditCard.getComments(),
-                System.currentTimeMillis(),
-                principalName
+            return Integer.toString(
+                new AddCreditCardTransactionCommand(
+                    processor,
+                    business,
+                    groupName,
+                    transactionRequest.getTestMode(),
+                    transactionRequest.getDuplicateWindow(),
+                    transactionRequest.getOrderNumber(),
+                    transactionRequest.getCurrency().getCurrencyCode(),
+                    transactionRequest.getAmount(),
+                    transactionRequest.getTaxAmount(),
+                    transactionRequest.getTaxExempt(),
+                    transactionRequest.getShippingAmount(),
+                    transactionRequest.getDutyAmount(),
+                    transactionRequest.getShippingFirstName(),
+                    transactionRequest.getShippingLastName(),
+                    transactionRequest.getShippingCompanyName(),
+                    transactionRequest.getShippingStreetAddress1(),
+                    transactionRequest.getShippingStreetAddress2(),
+                    transactionRequest.getShippingCity(),
+                    transactionRequest.getShippingState(),
+                    transactionRequest.getShippingPostalCode(),
+                    transactionRequest.getShippingCountryCode(),
+                    transactionRequest.getEmailCustomer(),
+                    transactionRequest.getMerchantEmail(),
+                    transactionRequest.getInvoiceNumber(),
+                    transactionRequest.getPurchaseOrderNumber(),
+                    transactionRequest.getDescription(),
+                    creditCardCreatedBy,
+                    creditCard.getPrincipalName(),
+                    ccBusiness,
+                    creditCard.getGroupName(),
+                    creditCard.getProviderUniqueId(),
+                    creditCard.getMaskedCardNumber(),
+                    creditCard.getFirstName(),
+                    creditCard.getLastName(),
+                    creditCard.getCompanyName(),
+                    creditCard.getEmail(),
+                    creditCard.getPhone(),
+                    creditCard.getFax(),
+                    creditCard.getCustomerTaxId(),
+                    creditCard.getStreetAddress1(),
+                    creditCard.getStreetAddress2(),
+                    creditCard.getCity(),
+                    creditCard.getState(),
+                    creditCard.getPostalCode(),
+                    creditCard.getCountryCode(),
+                    creditCard.getComments(),
+                    new Timestamp(System.currentTimeMillis()),
+                    principalName
+                ).execute(conn)
             );
-            return Integer.toString(pkey);
-        } catch(IOException err) {
-            SQLException sqlErr = new SQLException();
-            sqlErr.initCause(err);
-            throw sqlErr;
+        } catch(RemoteException err) {
+            throw new SQLException(err);
         }
     }
 
@@ -288,7 +286,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             TransactionResult.CommunicationResult captureCommunicationResult = captureResult.getCommunicationResult();
             TransactionResult.ErrorCode captureErrorCode = captureResult.getErrorCode();
 
-            ccTransaction.saleCompleted(
+            new SaleCompletedCommand(
+                ccTransaction,
                 authorizationCommunicationResult==null ? null : authorizationCommunicationResult.name(),
                 authorizationResult.getProviderErrorCode(),
                 authorizationErrorCode==null ? null : authorizationErrorCode.name(),
@@ -305,7 +304,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                 authorizationResult.getProviderAvsResult(),
                 avsResult==null ? null : avsResult.name(),
                 authorizationResult.getApprovalCode(),
-                transaction.getCaptureTime(),
+                new Timestamp(transaction.getCaptureTime()),
                 transaction.getCapturePrincipalName(),
                 captureCommunicationResult==null ? null : captureCommunicationResult.name(),
                 captureResult.getProviderErrorCode(),
@@ -313,11 +312,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                 captureResult.getProviderErrorMessage(),
                 captureResult.getProviderUniqueId(),
                 transaction.getStatus().name()
-            );
-        } catch(IOException err) {
-            SQLException sqlErr = new SQLException();
-            sqlErr.initCause(err);
-            throw sqlErr;
+            ).execute(conn);
+        } catch(RemoteException err) {
+            throw new SQLException(err);
         }
     }
 
@@ -350,7 +347,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             AuthorizationResult.CvvResult cvvResult = authorizationResult.getCvvResult();
             AuthorizationResult.AvsResult avsResult = authorizationResult.getAvsResult();
 
-            ccTransaction.authorizeCompleted(
+            new AuthorizeCompletedCommand(
+                ccTransaction,
                 authorizationCommunicationResult==null ? null : authorizationCommunicationResult.name(),
                 authorizationResult.getProviderErrorCode(),
                 authorizationErrorCode==null ? null : authorizationErrorCode.name(),
@@ -368,11 +366,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                 avsResult==null ? null : avsResult.name(),
                 authorizationResult.getApprovalCode(),
                 transaction.getStatus().name()
-            );
-        } catch(IOException err) {
-            SQLException sqlErr = new SQLException();
-            sqlErr.initCause(err);
-            throw sqlErr;
+            ).execute(conn);
+        } catch(RemoteException err) {
+            throw new SQLException(err);
         }
     }
 
@@ -380,6 +376,6 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     public void voidCompleted(Principal principal, Transaction transaction) throws SQLException {
         AOServConnector conn = getAOServConnector(principal);
 
-        throw new RuntimeException("TODO: Implement method");
+        throw new NotImplementedException("Implement when first needed");
     }
 }
