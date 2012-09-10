@@ -1,23 +1,21 @@
 /*
- * Copyright 2007-2011 by AO Industries, Inc.,
+ * Copyright 2007-2012 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 package com.aoindustries.aoserv.creditcards;
 
 import com.aoindustries.aoserv.client.AOServConnector;
-import com.aoindustries.aoserv.client.IndexedSet;
 import com.aoindustries.creditcards.CreditCardProcessor;
 import com.aoindustries.creditcards.MerchantServicesProvider;
 import com.aoindustries.creditcards.MerchantServicesProviderFactory;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.ObjectUtils;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Creates instances of <code>CreditCardProcessor</code>s based on the processor
@@ -74,17 +72,15 @@ public class CreditCardProcessorFactory {
             return
                 providerId.equals(other.providerId)
                 && className.equals(other.className)
-                && StringUtility.equals(param1, other.param1)
-                && StringUtility.equals(param2, other.param2)
-                && StringUtility.equals(param3, other.param3)
-                && StringUtility.equals(param4, other.param4)
+                && ObjectUtils.equals(param1, other.param1)
+                && ObjectUtils.equals(param2, other.param2)
+                && ObjectUtils.equals(param3, other.param3)
+                && ObjectUtils.equals(param4, other.param4)
             ;
         }
     }
 
     final private static Map<ProcessorKey,CreditCardProcessor> processors = new HashMap<ProcessorKey,CreditCardProcessor>();
-
-    private static final Random random = new SecureRandom();
 
     /**
      * Gets an enabled <code>CreditCardProcessor</code> from the list of processors for the business
@@ -100,13 +96,13 @@ public class CreditCardProcessorFactory {
      */
     public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
         // Select the aoserv-client processor before synchronizing on processors
-        IndexedSet<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getBusiness().getCreditCardProcessors();
+        List<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getPackage().getBusiness().getCreditCardProcessors();
         // Count the total weight of enabled processors
         int totalEnabledProcessors = 0;
         com.aoindustries.aoserv.client.CreditCardProcessor firstCCP = null;
         int totalWeight = 0;
         for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
-            if(ccp.isEnabled() && ccp.getWeight()>0) {
+            if(ccp.getEnabled() && ccp.getWeight()>0) {
                 totalEnabledProcessors++;
                 if(firstCCP==null) firstCCP = ccp;
                 totalWeight += ccp.getWeight();
@@ -123,10 +119,10 @@ public class CreditCardProcessorFactory {
         } else {
             // Pick a random one based on this weight
             selectedCCP = null;
-            int randomPosition = random.nextInt(totalWeight);
+            int randomPosition = AOServConnector.getRandom().nextInt(totalWeight);
             int weightSoFar = 0;
             for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
-                if(ccp.isEnabled() && ccp.getWeight()>0) {
+                if(ccp.getEnabled() && ccp.getWeight()>0) {
                     weightSoFar += ccp.getWeight();
                     if(weightSoFar>randomPosition) {
                         selectedCCP = ccp;
