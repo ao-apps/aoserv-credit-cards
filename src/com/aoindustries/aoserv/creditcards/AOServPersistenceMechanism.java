@@ -1,16 +1,18 @@
-package com.aoindustries.aoserv.creditcards;
-
 /*
- * Copyright 2007-2009 by AO Industries, Inc.,
+ * Copyright 2007-2013 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
+package com.aoindustries.aoserv.creditcards;
+
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.aoserv.client.Business;
 import com.aoindustries.aoserv.client.BusinessAdministrator;
 import com.aoindustries.aoserv.client.CountryCode;
 import com.aoindustries.aoserv.client.CreditCardProcessor;
 import com.aoindustries.aoserv.client.CreditCardTransaction;
+import com.aoindustries.aoserv.client.validator.AccountingCode;
+import com.aoindustries.aoserv.client.validator.ValidationException;
 import com.aoindustries.creditcards.AuthorizationResult;
 import com.aoindustries.creditcards.CaptureResult;
 import com.aoindustries.creditcards.CreditCard;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * Stores the information in the AOServ system.  The principal sent in to the
@@ -77,7 +80,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
         try {
             AOServConnector conn = getAOServConnector(principal);
             String principalName = getPrincipalName(principal);
-            Business business = conn.getBusinesses().get(creditCard.getGroupName());
+            Business business = conn.getBusinesses().get(AccountingCode.valueOf(creditCard.getGroupName()));
             if(business==null) throw new SQLException("Unable to find Business: "+creditCard.getGroupName());
             CreditCardProcessor processor = conn.getCreditCardProcessors().get(creditCard.getProviderId());
             if(processor==null) throw new SQLException("Unable to find CreditCardProcessor: "+creditCard.getProviderId());
@@ -108,8 +111,14 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                 creditCard.getExpirationYear()
             );
             return Integer.toString(pkey);
-        } catch(IOException err) {
-            throw new SQLException(err);
+        } catch(ValidationException e) {
+            SQLException exc = new SQLException(e.getLocalizedMessage());
+            exc.initCause(e);
+            throw exc;
+        } catch(IOException e) {
+            SQLException exc = new SQLException(e.getLocalizedMessage());
+            exc.initCause(e);
+            throw exc;
         }
     }
 
@@ -163,8 +172,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
             SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
             sqlErr.initCause(err);
             throw sqlErr;
-        } catch(IOException err) {
-            throw new SQLException(err);
+        } catch(IOException e) {
+            SQLException exc = new SQLException(e.getLocalizedMessage());
+            exc.initCause(e);
+            throw exc;
         }
     }
 
@@ -312,7 +323,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
                 authorizationResult.getProviderAvsResult(),
                 avsResult==null ? null : avsResult.name(),
                 authorizationResult.getApprovalCode(),
-                transaction.getCaptureTime(),
+                transaction.getCaptureTime()==-1 ? null : new Timestamp(transaction.getCaptureTime()),
                 transaction.getCapturePrincipalName(),
                 captureCommunicationResult==null ? null : captureCommunicationResult.name(),
                 captureResult.getProviderErrorCode(),
