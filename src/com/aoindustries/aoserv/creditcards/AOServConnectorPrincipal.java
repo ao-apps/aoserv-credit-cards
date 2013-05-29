@@ -1,14 +1,14 @@
 package com.aoindustries.aoserv.creditcards;
-
 /*
- * Copyright 2007-2011 by AO Industries, Inc.,
+ * Copyright 2007-2009 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.util.WrappedException;
-import java.rmi.RemoteException;
+import java.io.IOException;
 import java.security.Principal;
+import java.sql.SQLException;
 
 /**
  * Uses an <code>AOServConnector</code> as a Java <code>Principal</code>.
@@ -36,7 +36,9 @@ final public class AOServConnectorPrincipal implements Principal {
             } else {
                 return principalName.equals(other.principalName);
             }
-        } catch(RemoteException err) {
+        } catch(IOException err) {
+            throw new WrappedException(err);
+        } catch(SQLException err) {
             throw new WrappedException(err);
         }
     }
@@ -50,7 +52,9 @@ final public class AOServConnectorPrincipal implements Principal {
     public int hashCode() {
         try {
             return conn.getThisBusinessAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
-        } catch(RemoteException err) {
+        } catch(IOException err) {
+            throw new WrappedException(err);
+        } catch(SQLException err) {
             throw new WrappedException(err);
         }
     }

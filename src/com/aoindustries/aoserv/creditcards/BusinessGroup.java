@@ -1,14 +1,15 @@
 package com.aoindustries.aoserv.creditcards;
 /*
- * Copyright 2007-2011 by AO Industries, Inc.,
+ * Copyright 2007-2009 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 import com.aoindustries.aoserv.client.Business;
 import com.aoindustries.util.WrappedException;
-import java.rmi.RemoteException;
+import java.io.IOException;
 import java.security.Principal;
 import java.security.acl.Group;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
 /**
@@ -78,10 +79,12 @@ final public class BusinessGroup implements Group {
         try {
             if(user instanceof AOServConnectorPrincipal) {
                 AOServConnectorPrincipal acp = (AOServConnectorPrincipal)user;
-                return acp.getAOServConnector().getThisBusinessAdministrator().getUsername().getBusiness().isBusinessOrParentOf(business);
+                return acp.getAOServConnector().getThisBusinessAdministrator().getUsername().getPackage().getBusiness().isBusinessOrParentOf(business);
             }
             return false;
-        } catch(RemoteException err) {
+        } catch(IOException err) {
+            throw new WrappedException(err);
+        } catch(SQLException err) {
             throw new WrappedException(err);
         }
     }
