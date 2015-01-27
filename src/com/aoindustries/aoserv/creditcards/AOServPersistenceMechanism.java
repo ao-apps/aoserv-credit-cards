@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2013 by AO Industries, Inc.,
+ * Copyright 2007-2013, 2015 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -123,13 +123,63 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     }
 
     @Override
-    public void updateCardNumber(Principal principal, CreditCard creditCard, String cardNumber, byte expirationMonth, short expirationYear) throws SQLException {
+    public void updateCreditCard(
+		Principal principal,
+		CreditCard creditCard
+	) throws SQLException {
         try {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
-            aoservCreditCard.updateCardNumberAndExpiration(CreditCard.maskCreditCardNumber(cardNumber), cardNumber, expirationMonth, expirationYear);
+            CountryCode countryCode = conn.getCountryCodes().get(creditCard.getCountryCode());
+            if(countryCode==null) throw new SQLException("Unable to find CountryCode: "+creditCard.getCountryCode());
+            aoservCreditCard.update(
+                creditCard.getFirstName(),
+                creditCard.getLastName(),
+                creditCard.getCompanyName(),
+                creditCard.getEmail(),
+                creditCard.getPhone(),
+                creditCard.getFax(),
+                creditCard.getCustomerTaxId(),
+                creditCard.getStreetAddress1(),
+                creditCard.getStreetAddress2(),
+                creditCard.getCity(),
+                creditCard.getState(),
+                creditCard.getPostalCode(),
+				countryCode,
+                creditCard.getComments()
+			);
+        } catch(NumberFormatException err) {
+            SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
+            sqlErr.initCause(err);
+            throw sqlErr;
+        } catch(IOException err) {
+            SQLException sqlErr = new SQLException();
+            sqlErr.initCause(err);
+            throw sqlErr;
+        }
+    }
+
+	@Override
+    public void updateCardNumber(
+		Principal principal,
+		CreditCard creditCard,
+		String cardNumber,
+		byte expirationMonth,
+		short expirationYear
+	) throws SQLException {
+        try {
+            AOServConnector conn = getAOServConnector(principal);
+            int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
+            com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
+            if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
+            aoservCreditCard.updateCardNumberAndExpiration(
+				CreditCard.maskCreditCardNumber(cardNumber),
+				cardNumber,
+				expirationMonth,
+				expirationYear
+			);
         } catch(NumberFormatException err) {
             SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
             sqlErr.initCause(err);
@@ -142,13 +192,21 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
     }
 
     @Override
-    public void updateExpiration(Principal principal, CreditCard creditCard, byte expirationMonth, short expirationYear) throws SQLException {
+    public void updateExpiration(
+		Principal principal,
+		CreditCard creditCard,
+		byte expirationMonth,
+		short expirationYear
+	) throws SQLException {
         try {
             AOServConnector conn = getAOServConnector(principal);
             int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
             com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
             if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
-            aoservCreditCard.updateCardExpiration(expirationMonth, expirationYear);
+            aoservCreditCard.updateCardExpiration(
+				expirationMonth,
+				expirationYear
+			);
         } catch(NumberFormatException err) {
             SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
             sqlErr.initCause(err);

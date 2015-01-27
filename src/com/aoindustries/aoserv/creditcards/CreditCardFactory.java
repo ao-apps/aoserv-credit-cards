@@ -1,9 +1,10 @@
-package com.aoindustries.aoserv.creditcards;
 /*
- * Copyright 2007-2009 by AO Industries, Inc.,
+ * Copyright 2007-2009, 2015 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
+package com.aoindustries.aoserv.creditcards;
+
 import com.aoindustries.creditcards.CreditCard;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,18 +26,18 @@ public class CreditCardFactory {
             creditCard.getGroupName(),
             creditCard.getCreditCardProcessor().getProviderId(),
             creditCard.getProviderUniqueId(),
-            null,
+            null, // cardNumber
             creditCard.getCardInfo(),
-            (byte)-1,
-            (short)-1,
-            null,
+            (byte)-1, // expirationMonth
+            (short)-1, // expirationYear
+            null, // cardCode
             creditCard.getFirstName(),
             creditCard.getLastName(),
             creditCard.getCompanyName(),
             creditCard.getEmail(),
             creditCard.getPhone(),
             creditCard.getFax(),
-            null,
+            null, // customerId
             creditCard.getCustomerTaxId(),
             creditCard.getStreetAddress1(),
             creditCard.getStreetAddress2(),
