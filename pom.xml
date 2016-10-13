@@ -34,7 +34,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 	<packaging>jar</packaging>
 
 	<name>AOServ Credit Cards</name>
-	<url>https://www.aoindustries.com/docs/aoserv-credit-cards/</url>
+	<url>https://www.aoindustries.com/aoserv/credit-cards/</url>
 	<description>Stores credit card processing data in the AOServ Platform.</description>
 	<inceptionYear>2007</inceptionYear>
 
@@ -217,8 +217,8 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 							<quiet>true</quiet>
 							<links>
 								<link>https://www.aoindustries.com/ao-credit-cards/api/apidocs/</link>
-								<link>https://www.aoindustries.com/docs/aocode-public/</link>
-								<link>https://www.aoindustries.com/docs/aoserv-client/</link>
+								<link>https://www.aoindustries.com/aocode-public/apidocs/</link>
+								<link>https://www.aoindustries.com/aoserv/client/apidocs/</link>
 							</links>
 						</configuration>
 						<executions>
