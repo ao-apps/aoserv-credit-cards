@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
- * Stores the information in the AOServ system.  The principal sent in to the
+ * Stores the information in the AOServ Platform.  The principal sent in to the
  * methods should be an instance of <code>AOServConnectorPrincipal</code> and
  * any group should be a <code>BusinessGroup</code>.
  *
