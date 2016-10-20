@@ -315,17 +315,17 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 		<dependency>
 			<groupId>com.aoindustries</groupId>
 			<artifactId>ao-credit-cards-api</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
 			<artifactId>aocode-public</artifactId>
-			<version>1.8.1-SNAPSHOT</version>
+			<version>1.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
 			<artifactId>aoserv-client</artifactId>
-			<version>1.79.5-SNAPSHOT</version>
+			<version>1.79.5</version>
 		</dependency>
 	</dependencies>
 </project>
