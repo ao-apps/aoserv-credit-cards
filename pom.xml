@@ -71,8 +71,6 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<!-- TODO: Here and everywhere put the javadoc plugin version in top-level parent plugin management -->
-						<version>2.10.4</version>
 						<configuration>
 							<links>
 								<link>https://www.aoindustries.com/ao-credit-cards/api/apidocs/</link>
