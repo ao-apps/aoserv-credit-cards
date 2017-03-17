@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2013, 2015, 2016 by AO Industries, Inc.,
+ * Copyright 2007-2013, 2015, 2016, 2017 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -12,7 +12,6 @@ import com.aoindustries.aoserv.client.CountryCode;
 import com.aoindustries.aoserv.client.CreditCardProcessor;
 import com.aoindustries.aoserv.client.CreditCardTransaction;
 import com.aoindustries.aoserv.client.validator.AccountingCode;
-import com.aoindustries.aoserv.client.validator.ValidationException;
 import com.aoindustries.creditcards.AuthorizationResult;
 import com.aoindustries.creditcards.CaptureResult;
 import com.aoindustries.creditcards.CreditCard;
@@ -20,6 +19,7 @@ import com.aoindustries.creditcards.PersistenceMechanism;
 import com.aoindustries.creditcards.Transaction;
 import com.aoindustries.creditcards.TransactionRequest;
 import com.aoindustries.creditcards.TransactionResult;
+import com.aoindustries.validation.ValidationException;
 import java.io.IOException;
 import java.security.Principal;
 import java.security.acl.Group;
