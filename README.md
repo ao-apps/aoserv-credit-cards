@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://aoindustries.com/) [AOServ](https://aoindustries.com/aoserv/) / [Credit Cards](https://aoindustries.com/aoserv/credit-cards/)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [AOServ](https://aoindustries.com/aoserv/) / [Credit Cards](https://github.com/aoindustries/aoserv-credit-cards)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-current-stable">
 		<img src="https://aoindustries.com/ao-badges/project-current-stable.svg" alt="project: current stable" />
@@ -21,7 +21,7 @@
 	</a>
 </p>
 
-Stores [AO Credit Cards](https://aoindustries.com/ao-credit-cards/) data in the [AOServ Platform](https://aoindustries.com/aoserv/).
+Stores [AO Credit Cards](https://github.com/aoindustries/ao-credit-cards) data in the [AOServ Platform](https://aoindustries.com/aoserv/).
 
 ## Project Links
 * [Project Home](https://aoindustries.com/aoserv/credit-cards/)
@@ -31,7 +31,7 @@ Stores [AO Credit Cards](https://aoindustries.com/ao-credit-cards/) data in the 
 * [GitHub](https://github.com/aoindustries/aoserv-credit-cards)
 
 ## Related Projects
-* [AO Credit Cards](https://aoindustries.com/ao-credit-cards/)
+* [AO Credit Cards](https://github.com/aoindustries/ao-credit-cards)
 
 ## Contact Us
 For questions or support, please [contact us](https://aoindustries.com/contact):
