@@ -1,16 +1,16 @@
 /*
- * Copyright 2007-2013, 2015, 2016, 2017 by AO Industries, Inc.,
+ * Copyright 2007-2013, 2015, 2016, 2017, 2018 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 package com.aoindustries.aoserv.creditcards;
 
 import com.aoindustries.aoserv.client.AOServConnector;
-import com.aoindustries.aoserv.client.Business;
-import com.aoindustries.aoserv.client.BusinessAdministrator;
-import com.aoindustries.aoserv.client.CountryCode;
-import com.aoindustries.aoserv.client.CreditCardProcessor;
-import com.aoindustries.aoserv.client.CreditCardTransaction;
+import com.aoindustries.aoserv.client.account.Business;
+import com.aoindustries.aoserv.client.account.BusinessAdministrator;
+import com.aoindustries.aoserv.client.payment.CountryCode;
+import com.aoindustries.aoserv.client.payment.CreditCardProcessor;
+import com.aoindustries.aoserv.client.payment.CreditCardTransaction;
 import com.aoindustries.aoserv.client.validator.AccountingCode;
 import com.aoindustries.creditcards.AuthorizationResult;
 import com.aoindustries.creditcards.CaptureResult;
@@ -130,7 +130,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		try {
 			AOServConnector conn = getAOServConnector(principal);
 			int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-			com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
+			com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
 			if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
 			CountryCode countryCode = conn.getCountryCodes().get(creditCard.getCountryCode());
 			if(countryCode==null) throw new SQLException("Unable to find CountryCode: "+creditCard.getCountryCode());
@@ -172,7 +172,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		try {
 			AOServConnector conn = getAOServConnector(principal);
 			int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-			com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
+			com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
 			if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
 			aoservCreditCard.updateCardNumberAndExpiration(
 				CreditCard.maskCreditCardNumber(cardNumber),
@@ -201,7 +201,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		try {
 			AOServConnector conn = getAOServConnector(principal);
 			int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-			com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
+			com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
 			if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
 			aoservCreditCard.updateCardExpiration(
 				expirationMonth,
@@ -223,7 +223,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		try {
 			AOServConnector conn = getAOServConnector(principal);
 			int pkey = Integer.parseInt(creditCard.getPersistenceUniqueId());
-			com.aoindustries.aoserv.client.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
+			com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard = conn.getCreditCards().get(pkey);
 			if(aoservCreditCard==null) throw new SQLException("Unable to find CreditCard: "+pkey);
 			aoservCreditCard.remove();
 		} catch(NumberFormatException err) {
@@ -259,7 +259,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 					ccBusiness = business;
 				} else {
 					int ccPersistIdInt = Integer.parseInt(ccPersistId);
-					com.aoindustries.aoserv.client.CreditCard storedCard = conn.getCreditCards().get(ccPersistIdInt);
+					com.aoindustries.aoserv.client.payment.CreditCard storedCard = conn.getCreditCards().get(ccPersistIdInt);
 					if(storedCard==null) throw new SQLException("Unable to find CreditCard: "+ccPersistIdInt);
 					creditCardCreatedBy = storedCard.getCreatedBy();
 					if(creditCardCreatedBy==null) {

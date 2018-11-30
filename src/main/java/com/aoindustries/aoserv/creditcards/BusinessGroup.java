@@ -1,11 +1,11 @@
 /*
- * Copyright 2007-2009, 2016 by AO Industries, Inc.,
+ * Copyright 2007-2009, 2016, 2018 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 package com.aoindustries.aoserv.creditcards;
 
-import com.aoindustries.aoserv.client.Business;
+import com.aoindustries.aoserv.client.account.Business;
 import com.aoindustries.util.WrappedException;
 import java.io.IOException;
 import java.security.Principal;

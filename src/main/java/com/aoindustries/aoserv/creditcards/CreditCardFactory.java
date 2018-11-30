@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009, 2015, 2016 by AO Industries, Inc.,
+ * Copyright 2007-2009, 2015, 2016, 2018 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -19,7 +19,7 @@ public class CreditCardFactory {
 	/**
 	 * Creates processor CreditCard beans from AOServ CreditCards.
 	 */
-	public static CreditCard getCreditCard(com.aoindustries.aoserv.client.CreditCard creditCard) throws SQLException, IOException {
+	public static CreditCard getCreditCard(com.aoindustries.aoserv.client.payment.CreditCard creditCard) throws SQLException, IOException {
 		return new CreditCard(
 			Integer.toString(creditCard.getPkey()),
 			creditCard.getPrincipalName(),
