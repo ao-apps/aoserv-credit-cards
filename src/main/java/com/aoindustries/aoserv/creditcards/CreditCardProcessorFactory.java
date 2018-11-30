@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2012, 2015 by AO Industries, Inc.,
+ * Copyright 2007-2012, 2015, 2018 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -96,12 +96,12 @@ public class CreditCardProcessorFactory {
 	 */
 	public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
 		// Select the aoserv-client processor before synchronizing on processors
-		List<com.aoindustries.aoserv.client.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getPackage().getBusiness().getCreditCardProcessors();
+		List<com.aoindustries.aoserv.client.payment.CreditCardProcessor> ccps = conn.getThisBusinessAdministrator().getUsername().getPackage().getBusiness().getCreditCardProcessors();
 		// Count the total weight of enabled processors
 		int totalEnabledProcessors = 0;
-		com.aoindustries.aoserv.client.CreditCardProcessor firstCCP = null;
+		com.aoindustries.aoserv.client.payment.CreditCardProcessor firstCCP = null;
 		int totalWeight = 0;
-		for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
+		for(com.aoindustries.aoserv.client.payment.CreditCardProcessor ccp : ccps) {
 			if(ccp.getEnabled() && ccp.getWeight()>0) {
 				totalEnabledProcessors++;
 				if(firstCCP==null) firstCCP = ccp;
@@ -112,7 +112,7 @@ public class CreditCardProcessorFactory {
 		if(totalEnabledProcessors==0) return null;
 
 		// Pick one by weight
-		com.aoindustries.aoserv.client.CreditCardProcessor selectedCCP;
+		com.aoindustries.aoserv.client.payment.CreditCardProcessor selectedCCP;
 		if(totalEnabledProcessors==1) {
 			// One processor shortcut
 			selectedCCP = firstCCP;
@@ -121,7 +121,7 @@ public class CreditCardProcessorFactory {
 			selectedCCP = null;
 			int randomPosition = AOServConnector.getRandom().nextInt(totalWeight);
 			int weightSoFar = 0;
-			for(com.aoindustries.aoserv.client.CreditCardProcessor ccp : ccps) {
+			for(com.aoindustries.aoserv.client.payment.CreditCardProcessor ccp : ccps) {
 				if(ccp.getEnabled() && ccp.getWeight()>0) {
 					weightSoFar += ccp.getWeight();
 					if(weightSoFar>randomPosition) {
@@ -145,7 +145,7 @@ public class CreditCardProcessorFactory {
 	 *
 	 * @see  MerchantServicesProviderFactory#getMerchantServicesProvider
 	 */
-	public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.CreditCardProcessor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+	public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.CreditCardProcessor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 		// The key in the map
 		ProcessorKey processorKey = new ProcessorKey(
 			selectedCCP.getProviderId(),
