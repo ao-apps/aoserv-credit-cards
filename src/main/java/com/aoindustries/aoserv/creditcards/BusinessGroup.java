@@ -5,7 +5,7 @@
  */
 package com.aoindustries.aoserv.creditcards;
 
-import com.aoindustries.aoserv.client.account.Business;
+import com.aoindustries.aoserv.client.account.Account;
 import com.aoindustries.util.WrappedException;
 import java.io.IOException;
 import java.security.Principal;
@@ -20,10 +20,10 @@ import java.util.Enumeration;
  */
 final public class BusinessGroup implements Group {
 
-	final private Business business;
+	final private Account business;
 	final private String groupName;
 
-	public BusinessGroup(Business business, String groupName) {
+	public BusinessGroup(Account business, String groupName) {
 		this.business = business;
 		this.groupName = groupName;
 	}
@@ -101,7 +101,7 @@ final public class BusinessGroup implements Group {
 	/**
 	 * Gets the business.
 	 */
-	public Business getBusiness() {
+	public Account getBusiness() {
 		return business;
 	}
 
