@@ -6,6 +6,7 @@
 package com.aoindustries.aoserv.creditcards;
 
 import com.aoindustries.creditcards.CreditCard;
+import com.aoindustries.lang.ObjectUtils;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -34,7 +35,7 @@ public class CreditCardFactory {
 			creditCard.getFirstName(),
 			creditCard.getLastName(),
 			creditCard.getCompanyName(),
-			creditCard.getEmail(),
+			ObjectUtils.toString(creditCard.getEmail()),
 			creditCard.getPhone(),
 			creditCard.getFax(),
 			null, // customerId

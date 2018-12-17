@@ -11,7 +11,6 @@ import com.aoindustries.aoserv.client.account.Administrator;
 import com.aoindustries.aoserv.client.payment.CountryCode;
 import com.aoindustries.aoserv.client.payment.Payment;
 import com.aoindustries.aoserv.client.payment.Processor;
-import com.aoindustries.aoserv.client.validator.AccountingCode;
 import com.aoindustries.creditcards.AuthorizationResult;
 import com.aoindustries.creditcards.CaptureResult;
 import com.aoindustries.creditcards.CreditCard;
@@ -19,6 +18,7 @@ import com.aoindustries.creditcards.PersistenceMechanism;
 import com.aoindustries.creditcards.Transaction;
 import com.aoindustries.creditcards.TransactionRequest;
 import com.aoindustries.creditcards.TransactionResult;
+import com.aoindustries.net.Email;
 import com.aoindustries.validation.ValidationException;
 import java.io.IOException;
 import java.security.Principal;
@@ -80,7 +80,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		try {
 			AOServConnector conn = getAOServConnector(principal);
 			String principalName = getPrincipalName(principal);
-			Account account = conn.getAccount().getAccount().get(AccountingCode.valueOf(creditCard.getGroupName()));
+			Account account = conn.getAccount().getAccount().get(Account.Name.valueOf(creditCard.getGroupName()));
 			if(account == null) throw new SQLException("Unable to find Account: " + creditCard.getGroupName());
 			Processor processor = conn.getPayment().getProcessor().get(creditCard.getProviderId());
 			if(processor == null) throw new SQLException("Unable to find CreditCardProcessor: " + creditCard.getProviderId());
@@ -94,7 +94,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				creditCard.getFirstName(),
 				creditCard.getLastName(),
 				creditCard.getCompanyName(),
-				creditCard.getEmail(),
+				Email.valueOf(creditCard.getEmail()),
 				creditCard.getPhone(),
 				creditCard.getFax(),
 				creditCard.getCustomerTaxId(),
@@ -138,7 +138,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				creditCard.getFirstName(),
 				creditCard.getLastName(),
 				creditCard.getCompanyName(),
-				creditCard.getEmail(),
+				Email.valueOf(creditCard.getEmail()),
 				creditCard.getPhone(),
 				creditCard.getFax(),
 				creditCard.getCustomerTaxId(),
@@ -152,6 +152,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			);
 		} catch(NumberFormatException err) {
 			SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
+			sqlErr.initCause(err);
+			throw sqlErr;
+		} catch(ValidationException err) {
+			SQLException sqlErr = new SQLException();
 			sqlErr.initCause(err);
 			throw sqlErr;
 		} catch(IOException err) {
@@ -291,7 +295,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				transactionRequest.getShippingPostalCode(),
 				transactionRequest.getShippingCountryCode(),
 				transactionRequest.getEmailCustomer(),
-				transactionRequest.getMerchantEmail(),
+				Email.valueOf(transactionRequest.getMerchantEmail()),
 				transactionRequest.getInvoiceNumber(),
 				transactionRequest.getPurchaseOrderNumber(),
 				transactionRequest.getDescription(),
@@ -304,7 +308,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				creditCard.getFirstName(),
 				creditCard.getLastName(),
 				creditCard.getCompanyName(),
-				creditCard.getEmail(),
+				Email.valueOf(creditCard.getEmail()),
 				creditCard.getPhone(),
 				creditCard.getFax(),
 				creditCard.getCustomerTaxId(),
@@ -319,6 +323,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				principalName
 			);
 			return Integer.toString(pkey);
+		} catch(ValidationException err) {
+			SQLException sqlErr = new SQLException();
+			sqlErr.initCause(err);
+			throw sqlErr;
 		} catch(IOException err) {
 			SQLException sqlErr = new SQLException();
 			sqlErr.initCause(err);
