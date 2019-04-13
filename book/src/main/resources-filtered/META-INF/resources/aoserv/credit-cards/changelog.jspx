@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
-Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
+Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -54,7 +54,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 				scmUrl="@{documented.scm.url}"
 			>
 				<ul>
-					<li>Updated for compatibility with restructured <core:link book="/aoserv/client" page="/" />.</li>
+					<li>Updated for compatibility with restructured <core:link book="/aoserv/client" page="/index.jspx" />.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
@@ -68,7 +68,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 			scmUrl="@{documented.scm.url}"
 		>
 			<ul>
-				<li>Updated for validation base moved from <core:link book="/aoserv/client" page="/" /> to <core:link book="/ao-lang" page="/" />.</li>
+				<li>Updated for validation base moved from <core:link book="/aoserv/client" page="/index.jspx" /> to <core:link book="/ao-lang" page="/index.jspx" />.</li>
 				<li>Updated dependencies.</li>
 			</ul>
 		</changelog:release>
@@ -82,7 +82,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 			scmUrl="@{documented.scm.url}"
 		>
 			<ul>
-				<li>New <core:link book="/ao-oss-parent" page="/" /> POM to simplify <code>pom.xml</code> files.</li>
+				<li>New <core:link book="/ao-oss-parent" page="/index.jspx" /> POM to simplify <code>pom.xml</code> files.</li>
 				<li>Project documentation moved to per-project book in <ao:a href="https://semanticcms.com/">SemanticCMS</ao:a> format.</li>
 				<li>Added changelog as top-level project link.</li>
 			</ul>
