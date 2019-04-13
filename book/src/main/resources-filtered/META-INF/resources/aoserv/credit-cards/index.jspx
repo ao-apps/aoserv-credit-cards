@@ -36,7 +36,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 		dateModified="2017-07-18T19:06:06-0500"
 	>
 		<core:child page="changelog.jspx" />
-		<core:child page="apidocs/" />
+		<core:child page="apidocs/index.jspx" />
 		<ao:include
 			page="/ao-badges/badges.inc.jspx"
 			arg.projectStatus="${currentPage.property.projectStatus}"
@@ -47,7 +47,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 			arg.license="${currentPage.property.license}"
 		/>
 		<p>
-			Stores <core:link book="/ao-credit-cards" page="/index.jspx" /> data in the <core:link book="/" page="/aoserv/" />.
+			Stores <core:link book="/ao-credit-cards" page="/index.jspx" /> data in the <core:link book="/" page="/aoserv/index.jspx" />.
 		</p>
 		<section:section label="Project Links">
 			<ul>
