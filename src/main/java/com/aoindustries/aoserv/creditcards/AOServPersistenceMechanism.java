@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2013, 2015, 2016, 2017, 2018 by AO Industries, Inc.,
+ * Copyright 2007-2013, 2015, 2016, 2017, 2018, 2019 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -111,14 +111,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				creditCard.getExpirationYear()
 			);
 			return Integer.toString(pkey);
-		} catch(ValidationException e) {
-			SQLException exc = new SQLException(e.getLocalizedMessage());
-			exc.initCause(e);
-			throw exc;
-		} catch(IOException e) {
-			SQLException exc = new SQLException(e.getLocalizedMessage());
-			exc.initCause(e);
-			throw exc;
+		} catch(ValidationException | IOException e) {
+			throw new SQLException(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -151,17 +145,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				creditCard.getComments()
 			);
 		} catch(NumberFormatException err) {
-			SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-			sqlErr.initCause(err);
-			throw sqlErr;
-		} catch(ValidationException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
-		} catch(IOException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+		} catch(ValidationException | IOException err) {
+			throw new SQLException(err);
 		}
 	}
 
@@ -185,13 +171,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				expirationYear
 			);
 		} catch(NumberFormatException err) {
-			SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
 		} catch(IOException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException(err);
 		}
 	}
 
@@ -212,13 +194,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				expirationYear
 			);
 		} catch(NumberFormatException err) {
-			SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
 		} catch(IOException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException(err);
 		}
 	}
 
@@ -231,13 +209,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			if(aoservCreditCard == null) throw new SQLException("Unable to find CreditCard: " + id);
 			aoservCreditCard.remove();
 		} catch(NumberFormatException err) {
-			SQLException sqlErr = new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId());
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
 		} catch(IOException e) {
-			SQLException exc = new SQLException(e.getLocalizedMessage());
-			exc.initCause(e);
-			throw exc;
+			throw new SQLException(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -323,14 +297,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				principalName
 			);
 			return Integer.toString(pkey);
-		} catch(ValidationException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
-		} catch(IOException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
+		} catch(ValidationException | IOException err) {
+			throw new SQLException(err);
 		}
 	}
 
@@ -399,9 +367,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				transaction.getStatus().name()
 			);
 		} catch(IOException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException(err);
 		}
 	}
 
@@ -456,9 +422,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				transaction.getStatus().name()
 			);
 		} catch(IOException err) {
-			SQLException sqlErr = new SQLException();
-			sqlErr.initCause(err);
-			throw sqlErr;
+			throw new SQLException(err);
 		}
 	}
 

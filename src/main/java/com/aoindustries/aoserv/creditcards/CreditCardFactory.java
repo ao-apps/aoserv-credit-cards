@@ -1,14 +1,14 @@
 /*
- * Copyright 2007-2009, 2015, 2016, 2018 by AO Industries, Inc.,
+ * Copyright 2007-2009, 2015, 2016, 2018, 2019 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
 package com.aoindustries.aoserv.creditcards;
 
 import com.aoindustries.creditcards.CreditCard;
-import com.aoindustries.lang.ObjectUtils;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * Creates instances of <code>CreditCard</code>s based on the AOServ object.
@@ -35,7 +35,7 @@ public class CreditCardFactory {
 			creditCard.getFirstName(),
 			creditCard.getLastName(),
 			creditCard.getCompanyName(),
-			ObjectUtils.toString(creditCard.getEmail()),
+			Objects.toString(creditCard.getEmail(), null),
 			creditCard.getPhone(),
 			creditCard.getFax(),
 			null, // customerId

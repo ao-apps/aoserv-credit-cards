@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2012, 2015, 2018 by AO Industries, Inc.,
+ * Copyright 2007-2012, 2015, 2018, 2019 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -9,13 +9,13 @@ import com.aoindustries.aoserv.client.AOServConnector;
 import com.aoindustries.creditcards.CreditCardProcessor;
 import com.aoindustries.creditcards.MerchantServicesProvider;
 import com.aoindustries.creditcards.MerchantServicesProviderFactory;
-import com.aoindustries.lang.ObjectUtils;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Creates instances of <code>CreditCardProcessor</code>s based on the processor
@@ -72,15 +72,15 @@ public class CreditCardProcessorFactory {
 			return
 				providerId.equals(other.providerId)
 				&& className.equals(other.className)
-				&& ObjectUtils.equals(param1, other.param1)
-				&& ObjectUtils.equals(param2, other.param2)
-				&& ObjectUtils.equals(param3, other.param3)
-				&& ObjectUtils.equals(param4, other.param4)
+				&& Objects.equals(param1, other.param1)
+				&& Objects.equals(param2, other.param2)
+				&& Objects.equals(param3, other.param3)
+				&& Objects.equals(param4, other.param4)
 			;
 		}
 	}
 
-	final private static Map<ProcessorKey,CreditCardProcessor> processors = new HashMap<ProcessorKey,CreditCardProcessor>();
+	final private static Map<ProcessorKey,CreditCardProcessor> processors = new HashMap<>();
 
 	/**
 	 * Gets an enabled <code>CreditCardProcessor</code> from the list of processors for the business

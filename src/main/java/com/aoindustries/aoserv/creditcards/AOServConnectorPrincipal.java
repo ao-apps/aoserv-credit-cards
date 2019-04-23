@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009, 2016 by AO Industries, Inc.,
+ * Copyright 2007-2009, 2016, 2019 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -37,9 +37,7 @@ final public class AOServConnectorPrincipal implements Principal {
 			} else {
 				return principalName.equals(other.principalName);
 			}
-		} catch(IOException err) {
-			throw new WrappedException(err);
-		} catch(SQLException err) {
+		} catch(IOException | SQLException err) {
 			throw new WrappedException(err);
 		}
 	}
@@ -53,9 +51,7 @@ final public class AOServConnectorPrincipal implements Principal {
 	public int hashCode() {
 		try {
 			return conn.getThisBusinessAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
-		} catch(IOException err) {
-			throw new WrappedException(err);
-		} catch(SQLException err) {
+		} catch(IOException | SQLException err) {
 			throw new WrappedException(err);
 		}
 	}
