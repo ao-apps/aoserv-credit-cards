@@ -37,7 +37,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-29T21:09:40-0500"
-		dateModified="2018-11-30T02:41:07-0600"
+		dateModified="2019-04-23T00:31:26-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.aoindustries:aoserv-credit-cards:pom.version}" />
