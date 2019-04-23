@@ -70,6 +70,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 								<link>${javac.link.javaApi}</link>
 								<link>https://aoindustries.com/ao-credit-cards/api/apidocs/</link>
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
+								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								<link>https://aoindustries.com/aoserv/client/apidocs/</link>
 							</links>
 						</configuration>
@@ -85,6 +86,9 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>2.0.0-validation-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.1.0-validation-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.81.22-validation-SNAPSHOT</version>
