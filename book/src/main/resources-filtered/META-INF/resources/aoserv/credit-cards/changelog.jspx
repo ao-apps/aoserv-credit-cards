@@ -54,6 +54,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 				scmUrl="@{documented.scm.url}"
 			>
 				<ul>
+					<li>Minimum Java version changed from 1.6 to 1.7.</li>
 					<li>Updated for compatibility with restructured <core:link book="/aoserv/client" page="/index.jspx" />.</li>
 				</ul>
 			</changelog:release>
