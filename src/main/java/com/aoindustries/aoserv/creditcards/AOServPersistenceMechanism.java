@@ -312,7 +312,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 	 *   <li>status</li>
 	 * </ol>
 	 *
-	 * The current status must be PROCESSING.
+	 * The current status must be PROCESSING or AUTHORIZED.
 	 */
 	@Override
 	public void saleCompleted(Principal principal, Transaction transaction) throws SQLException {
@@ -325,7 +325,18 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			int ccTransactionId = Integer.parseInt(transaction.getPersistenceUniqueId());
 			Payment ccTransaction = conn.getPayment().getPayment().get(ccTransactionId);
 			if(ccTransaction == null) throw new SQLException("Unable to find Payment: " + ccTransactionId);
-			if(!ccTransaction.getStatus().equals(Transaction.Status.PROCESSING.name())) throw new SQLException("CreditCardTransaction #"+ccTransactionId+" must have status "+Transaction.Status.PROCESSING.name()+", its current status is "+ccTransaction.getStatus());
+			if(
+				!ccTransaction.getStatus().equals(Transaction.Status.PROCESSING.name())
+				&& !ccTransaction.getStatus().equals(Transaction.Status.AUTHORIZED.name())
+			) {
+				throw new SQLException(
+					"CreditCardTransaction #" + ccTransactionId + " must have status "
+					+ Transaction.Status.PROCESSING.name()
+					+ " or "
+					+ Transaction.Status.AUTHORIZED.name()
+					+ ", its current status is " + ccTransaction.getStatus()
+				);
+			}
 
 			AuthorizationResult authorizationResult = transaction.getAuthorizationResult();
 			TransactionResult.CommunicationResult authorizationCommunicationResult = authorizationResult.getCommunicationResult();
