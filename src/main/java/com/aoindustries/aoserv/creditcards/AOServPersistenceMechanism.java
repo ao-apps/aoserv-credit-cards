@@ -129,6 +129,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			CountryCode countryCode = conn.getPayment().getCountryCode().get(creditCard.getCountryCode());
 			if(countryCode == null) throw new SQLException("Unable to find CountryCode: " + creditCard.getCountryCode());
 			aoservCreditCard.update(
+				creditCard.getMaskedCardNumber(),
 				creditCard.getFirstName(),
 				creditCard.getLastName(),
 				creditCard.getCompanyName(),
@@ -357,6 +358,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				authorizationErrorCode==null ? null : authorizationErrorCode.name(),
 				authorizationResult.getProviderErrorMessage(),
 				authorizationResult.getProviderUniqueId(),
+				authorizationResult.getProviderReplacementMaskedCardNumber(),
+				authorizationResult.getReplacementMaskedCardNumber(),
 				authorizationResult.getProviderApprovalResult(),
 				approvalResult==null ? null : approvalResult.name(),
 				authorizationResult.getProviderDeclineReason(),
@@ -419,6 +422,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				authorizationErrorCode==null ? null : authorizationErrorCode.name(),
 				authorizationResult.getProviderErrorMessage(),
 				authorizationResult.getProviderUniqueId(),
+				authorizationResult.getProviderReplacementMaskedCardNumber(),
+				authorizationResult.getReplacementMaskedCardNumber(),
 				authorizationResult.getProviderApprovalResult(),
 				approvalResult==null ? null : approvalResult.name(),
 				authorizationResult.getProviderDeclineReason(),
