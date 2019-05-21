@@ -21,6 +21,8 @@ public class CreditCardFactory {
 	 * Creates processor CreditCard beans from AOServ CreditCards.
 	 */
 	public static CreditCard getCreditCard(com.aoindustries.aoserv.client.payment.CreditCard creditCard) throws SQLException, IOException {
+		Byte expirationMonth = creditCard.getExpirationMonth();
+		Short expirationYear = creditCard.getExpirationYear();
 		return new CreditCard(
 			Integer.toString(creditCard.getPkey()),
 			creditCard.getPrincipalName(),
@@ -29,8 +31,8 @@ public class CreditCardFactory {
 			creditCard.getProviderUniqueId(),
 			null, // cardNumber
 			creditCard.getCardInfo(),
-			(byte)-1, // expirationMonth
-			(short)-1, // expirationYear
+			expirationMonth == null ? CreditCard.UNKNOWN_EXPRIATION_MONTH : expirationMonth, // TODO: 2.0: Nullable Byte
+			expirationYear == null ? CreditCard.UNKNOWN_EXPRIATION_YEAR : expirationYear, // TODO: 2.0: Nullable Short
 			null, // cardCode
 			creditCard.getFirstName(),
 			creditCard.getLastName(),
