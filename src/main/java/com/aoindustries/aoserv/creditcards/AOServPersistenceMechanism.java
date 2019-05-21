@@ -90,6 +90,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				processor,
 				creditCard.getGroupName(),
 				creditCard.getMaskedCardNumber(),
+				creditCard.getExpirationMonth(),
+				creditCard.getExpirationYear(),
 				creditCard.getProviderUniqueId(),
 				creditCard.getFirstName(),
 				creditCard.getLastName(),
@@ -106,9 +108,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				countryCode,
 				principalName,
 				creditCard.getComments(),
-				creditCard.getCardNumber(),
-				creditCard.getExpirationMonth(),
-				creditCard.getExpirationYear()
+				creditCard.getCardNumber()
 			);
 			return Integer.toString(pkey);
 		} catch(ValidationException | IOException e) {
@@ -248,6 +248,10 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 					ccBusiness = storedCard.getBusiness();
 				}
 			}
+			Byte expirationMonth = creditCard.getExpirationMonth(); // TODO: 2.0: Nullable Byte
+			if(expirationMonth == CreditCard.UNKNOWN_EXPRIATION_MONTH) expirationMonth = null;
+			Short expirationYear = creditCard.getExpirationYear(); // TODO: 2.0: Nullable Short
+			if(expirationYear == CreditCard.UNKNOWN_EXPRIATION_YEAR) expirationYear = null;
 			int pkey = business.addCreditCardTransaction(
 				processor,
 				groupName,
@@ -280,6 +284,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				creditCard.getGroupName(),
 				creditCard.getProviderUniqueId(),
 				creditCard.getMaskedCardNumber(),
+				expirationMonth,
+				expirationYear,
 				creditCard.getFirstName(),
 				creditCard.getLastName(),
 				creditCard.getCompanyName(),
@@ -360,6 +366,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				authorizationResult.getProviderUniqueId(),
 				authorizationResult.getProviderReplacementMaskedCardNumber(),
 				authorizationResult.getReplacementMaskedCardNumber(),
+				authorizationResult.getProviderReplacementExpiration(),
+				authorizationResult.getReplacementExpirationMonth(),
+				authorizationResult.getReplacementExpirationYear(),
 				authorizationResult.getProviderApprovalResult(),
 				approvalResult==null ? null : approvalResult.name(),
 				authorizationResult.getProviderDeclineReason(),
@@ -424,6 +433,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				authorizationResult.getProviderUniqueId(),
 				authorizationResult.getProviderReplacementMaskedCardNumber(),
 				authorizationResult.getReplacementMaskedCardNumber(),
+				authorizationResult.getProviderReplacementExpiration(),
+				authorizationResult.getReplacementExpirationMonth(),
+				authorizationResult.getReplacementExpirationYear(),
 				authorizationResult.getProviderApprovalResult(),
 				approvalResult==null ? null : approvalResult.name(),
 				authorizationResult.getProviderDeclineReason(),
