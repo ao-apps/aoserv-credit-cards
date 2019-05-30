@@ -25,6 +25,7 @@ import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,28 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				if(map.put(persistenceUniqueId, copy) != null) throw new SQLException("Duplicate persistenceUniqueId: " + persistenceUniqueId);
 			}
 			return map;
+		} catch(IOException err) {
+			throw new SQLException(err);
+		}
+	}
+
+	@Override
+	public Map<String, CreditCard> getCreditCards(Principal principal, String providerId) throws SQLException {
+		AOServConnector conn = getAOServConnector(principal);
+		try {
+			Processor processor = conn.getPayment().getProcessor().get(providerId);
+			if(processor == null) {
+				return new LinkedHashMap<>();
+			} else {
+				List<com.aoindustries.aoserv.client.payment.CreditCard> aoservCreditCards = processor.getCreditCards();
+				Map<String,CreditCard> map = new LinkedHashMap<>(aoservCreditCards.size() *4/3+1);
+				for(com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard : aoservCreditCards) {
+					CreditCard copy = newCreditCard(aoservCreditCard);
+					String persistenceUniqueId = copy.getPersistenceUniqueId();
+					if(map.put(persistenceUniqueId, copy) != null) throw new SQLException("Duplicate persistenceUniqueId: " + persistenceUniqueId);
+				}
+				return map;
+			}
 		} catch(IOException err) {
 			throw new SQLException(err);
 		}
