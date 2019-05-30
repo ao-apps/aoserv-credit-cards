@@ -25,6 +25,10 @@ import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Stores the information in the AOServ Platform.  The principal sent in to the
@@ -99,6 +103,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				Email.valueOf(creditCard.getEmail()),
 				creditCard.getPhone(),
 				creditCard.getFax(),
+				creditCard.getCustomerId(),
 				creditCard.getCustomerTaxId(),
 				creditCard.getStreetAddress1(),
 				creditCard.getStreetAddress2(),
@@ -113,6 +118,74 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			return Integer.toString(pkey);
 		} catch(ValidationException | IOException e) {
 			throw new SQLException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	private static CreditCard newCreditCard(com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard) throws SQLException, IOException {
+		Byte expirationMonth = aoservCreditCard.getExpirationMonth();
+		Short expirationYear = aoservCreditCard.getExpirationYear();
+		CountryCode countryCode = aoservCreditCard.getCountryCode();
+		return new CreditCard(
+			Integer.toString(aoservCreditCard.getPkey()),
+			aoservCreditCard.getPrincipalName(),
+			aoservCreditCard.getGroupName(),
+			aoservCreditCard.getCreditCardProcessor().getProviderId(),
+			aoservCreditCard.getProviderUniqueId(),
+			null, // cardNumber
+			aoservCreditCard.getCardInfo(),
+			expirationMonth == null ? CreditCard.UNKNOWN_EXPRIATION_MONTH : expirationMonth, // TODO: 2.0: Make nullable Byte
+			expirationYear == null ? CreditCard.UNKNOWN_EXPRIATION_YEAR : expirationYear, // TODO: 2.0: Make nullable Short
+			null, // cardCode
+			aoservCreditCard.getFirstName(),
+			aoservCreditCard.getLastName(),
+			aoservCreditCard.getCompanyName(),
+			Objects.toString(aoservCreditCard.getEmail(), null),
+			aoservCreditCard.getPhone(),
+			aoservCreditCard.getFax(),
+			aoservCreditCard.getCustomerId(),
+			aoservCreditCard.getCustomerTaxId(),
+			aoservCreditCard.getStreetAddress1(),
+			aoservCreditCard.getStreetAddress2(),
+			aoservCreditCard.getCity(),
+			aoservCreditCard.getState(),
+			aoservCreditCard.getPostalCode(),
+			countryCode == null ? null : countryCode.getCode(),
+			aoservCreditCard.getDescription()
+		);
+	}
+
+	@Override
+	public CreditCard getCreditCard(Principal principal, String persistenceUniqueId) throws SQLException {
+		AOServConnector conn = getAOServConnector(principal);
+		int id;
+		try {
+			id = Integer.parseInt(persistenceUniqueId);
+		} catch(NumberFormatException e) {
+			return null;
+		}
+		com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard;
+		try {
+			aoservCreditCard = conn.getPayment().getCreditCard().get(id);
+			return aoservCreditCard == null ? null : newCreditCard(aoservCreditCard);
+		} catch(IOException err) {
+			throw new SQLException(err);
+		}
+	}
+
+	@Override
+	public Map<String, CreditCard> getCreditCards(Principal principal) throws SQLException {
+		AOServConnector conn = getAOServConnector(principal);
+		try {
+			List<com.aoindustries.aoserv.client.payment.CreditCard> aoservCreditCards = conn.getPayment().getCreditCard().getRows();
+			Map<String,CreditCard> map = new LinkedHashMap<>(aoservCreditCards.size() *4/3+1);
+			for(com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard : aoservCreditCards) {
+				CreditCard copy = newCreditCard(aoservCreditCard);
+				String persistenceUniqueId = copy.getPersistenceUniqueId();
+				if(map.put(persistenceUniqueId, copy) != null) throw new SQLException("Duplicate persistenceUniqueId: " + persistenceUniqueId);
+			}
+			return map;
+		} catch(IOException err) {
+			throw new SQLException(err);
 		}
 	}
 
@@ -136,6 +209,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				Email.valueOf(creditCard.getEmail()),
 				creditCard.getPhone(),
 				creditCard.getFax(),
+				creditCard.getCustomerId(),
 				creditCard.getCustomerTaxId(),
 				creditCard.getStreetAddress1(),
 				creditCard.getStreetAddress2(),
@@ -292,6 +366,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				Email.valueOf(creditCard.getEmail()),
 				creditCard.getPhone(),
 				creditCard.getFax(),
+				creditCard.getCustomerId(),
 				creditCard.getCustomerTaxId(),
 				creditCard.getStreetAddress1(),
 				creditCard.getStreetAddress2(),

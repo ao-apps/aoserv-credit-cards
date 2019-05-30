@@ -40,7 +40,7 @@ public class CreditCardFactory {
 			Objects.toString(creditCard.getEmail(), null),
 			creditCard.getPhone(),
 			creditCard.getFax(),
-			null, // customerId
+			creditCard.getCustomerId(),
 			creditCard.getCustomerTaxId(),
 			creditCard.getStreetAddress1(),
 			creditCard.getStreetAddress2(),
