@@ -15,6 +15,7 @@ import com.aoindustries.creditcards.AuthorizationResult;
 import com.aoindustries.creditcards.CaptureResult;
 import com.aoindustries.creditcards.CreditCard;
 import com.aoindustries.creditcards.PersistenceMechanism;
+import com.aoindustries.creditcards.TokenizedCreditCard;
 import com.aoindustries.creditcards.Transaction;
 import com.aoindustries.creditcards.TransactionRequest;
 import com.aoindustries.creditcards.TransactionResult;
@@ -455,17 +456,18 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			TransactionResult.CommunicationResult captureCommunicationResult = captureResult.getCommunicationResult();
 			TransactionResult.ErrorCode captureErrorCode = captureResult.getErrorCode();
 
+			TokenizedCreditCard tokenizedCreditCard = authorizationResult.getTokenizedCreditCard();
 			ccTransaction.saleCompleted(
 				authorizationCommunicationResult==null ? null : authorizationCommunicationResult.name(),
 				authorizationResult.getProviderErrorCode(),
 				authorizationErrorCode==null ? null : authorizationErrorCode.name(),
 				authorizationResult.getProviderErrorMessage(),
 				authorizationResult.getProviderUniqueId(),
-				authorizationResult.getProviderReplacementMaskedCardNumber(),
-				authorizationResult.getReplacementMaskedCardNumber(),
-				authorizationResult.getProviderReplacementExpiration(),
-				authorizationResult.getReplacementExpirationMonth(),
-				authorizationResult.getReplacementExpirationYear(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementMaskedCardNumber(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementMaskedCardNumber(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementExpiration(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationMonth(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationYear(),
 				authorizationResult.getProviderApprovalResult(),
 				approvalResult==null ? null : approvalResult.name(),
 				authorizationResult.getProviderDeclineReason(),
@@ -522,17 +524,18 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			AuthorizationResult.CvvResult cvvResult = authorizationResult.getCvvResult();
 			AuthorizationResult.AvsResult avsResult = authorizationResult.getAvsResult();
 
+			TokenizedCreditCard tokenizedCreditCard = authorizationResult.getTokenizedCreditCard();
 			ccTransaction.authorizeCompleted(
 				authorizationCommunicationResult==null ? null : authorizationCommunicationResult.name(),
 				authorizationResult.getProviderErrorCode(),
 				authorizationErrorCode==null ? null : authorizationErrorCode.name(),
 				authorizationResult.getProviderErrorMessage(),
 				authorizationResult.getProviderUniqueId(),
-				authorizationResult.getProviderReplacementMaskedCardNumber(),
-				authorizationResult.getReplacementMaskedCardNumber(),
-				authorizationResult.getProviderReplacementExpiration(),
-				authorizationResult.getReplacementExpirationMonth(),
-				authorizationResult.getReplacementExpirationYear(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementMaskedCardNumber(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementMaskedCardNumber(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementExpiration(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationMonth(),
+				tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationYear(),
 				authorizationResult.getProviderApprovalResult(),
 				approvalResult==null ? null : approvalResult.name(),
 				authorizationResult.getProviderDeclineReason(),
