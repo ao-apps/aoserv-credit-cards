@@ -20,12 +20,15 @@ import com.aoindustries.creditcards.Transaction;
 import com.aoindustries.creditcards.TransactionRequest;
 import com.aoindustries.creditcards.TransactionResult;
 import com.aoindustries.net.Email;
+import com.aoindustries.util.i18n.Money;
 import com.aoindustries.validation.ValidationException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Currency;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +36,8 @@ import java.util.Objects;
 
 /**
  * Stores the information in the AOServ Platform.  The principal sent in to the
- * methods should be an instance of <code>AOServConnectorPrincipal</code> and
- * any group should be a <code>BusinessGroup</code>.
+ * methods should be an instance of {@link AOServConnectorPrincipal} and
+ * any group should be a {@link AccountGroup}.
  *
  * All operations will be performed using the connector from the principal,
  * therefore the underlying AOServ security model will apply to these calls.
@@ -68,16 +71,16 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		return ((AOServConnectorPrincipal)principal).getPrincipalName();
 	}
 
-	private static Account getBusiness(Group group) throws SQLException {
+	private static Account getAccount(Group group) throws SQLException {
 		if(group==null) throw new SQLException("group is null");
-		if(!(group instanceof BusinessGroup)) throw new SQLException("group is not a BusinessGroup: "+group.getName());
-		return ((BusinessGroup)group).getBusiness();
+		if(!(group instanceof AccountGroup)) throw new SQLException("group is not an AccountGroup: " + group.getName());
+		return ((AccountGroup)group).getAccount();
 	}
 
 	private static String getGroupName(Group group) throws SQLException {
 		if(group==null) throw new SQLException("group is null");
-		if(!(group instanceof BusinessGroup)) throw new SQLException("group is not a BusinessGroup: "+group.getName());
-		return ((BusinessGroup)group).getGroupName();
+		if(!(group instanceof AccountGroup)) throw new SQLException("group is not an AccountGroup: " + group.getName());
+		return ((AccountGroup)group).getGroupName();
 	}
 
 	@Override
@@ -313,12 +316,16 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		}
 	}
 
+	private static Money getMoney(Currency currency, BigDecimal value) {
+		return value == null ? null : new Money(currency, value);
+	}
+
 	@Override
 	public String insertTransaction(Principal principal, Group group, Transaction transaction) throws SQLException {
 		try {
 			AOServConnector conn = getAOServConnector(principal);
 			String principalName = getPrincipalName(principal);
-			Account business = getBusiness(group);
+			Account account = getAccount(group);
 			String groupName = getGroupName(group);
 			String providerId = transaction.getProviderId();
 			Processor processor = conn.getPayment().getProcessor().get(providerId);
@@ -327,12 +334,12 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			CreditCard creditCard = transaction.getCreditCard();
 			// Try to find the createdBy from the credit card persistence mechanism, otherwise default to current principal
 			Administrator creditCardCreatedBy;
-			Account ccBusiness;
+			Account ccAccount;
 			{
 				String ccPersistId = creditCard.getPersistenceUniqueId();
 				if(ccPersistId==null || ccPersistId.length()==0) {
-					creditCardCreatedBy = conn.getThisBusinessAdministrator();
-					ccBusiness = business;
+					creditCardCreatedBy = conn.getCurrentAdministrator();
+					ccAccount = account;
 				} else {
 					int ccPersistIdInt = Integer.parseInt(ccPersistId);
 					com.aoindustries.aoserv.client.payment.CreditCard storedCard = conn.getPayment().getCreditCard().get(ccPersistIdInt);
@@ -340,27 +347,28 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 					creditCardCreatedBy = storedCard.getCreatedBy();
 					if(creditCardCreatedBy==null) {
 						// Might have been filtered - this is OK
-						creditCardCreatedBy = conn.getThisBusinessAdministrator();
+						creditCardCreatedBy = conn.getCurrentAdministrator();
 					}
-					ccBusiness = storedCard.getBusiness();
+					ccAccount = storedCard.getAccount();
 				}
 			}
 			Byte expirationMonth = creditCard.getExpirationMonth(); // TODO: 2.0: Nullable Byte
 			if(expirationMonth == CreditCard.UNKNOWN_EXPRIATION_MONTH) expirationMonth = null;
 			Short expirationYear = creditCard.getExpirationYear(); // TODO: 2.0: Nullable Short
 			if(expirationYear == CreditCard.UNKNOWN_EXPRIATION_YEAR) expirationYear = null;
-			int pkey = business.addCreditCardTransaction(
+			Currency currency = transactionRequest.getCurrency();
+			int pkey = conn.getPayment().getPayment().addPayment(
 				processor,
+				account,
 				groupName,
 				transactionRequest.getTestMode(),
 				transactionRequest.getDuplicateWindow(),
 				transactionRequest.getOrderNumber(),
-				transactionRequest.getCurrency().getCurrencyCode(),
-				transactionRequest.getAmount(),
-				transactionRequest.getTaxAmount(),
+				new Money(currency, transactionRequest.getAmount()),
+				getMoney(currency, transactionRequest.getTaxAmount()),
 				transactionRequest.getTaxExempt(),
-				transactionRequest.getShippingAmount(),
-				transactionRequest.getDutyAmount(),
+				getMoney(currency, transactionRequest.getShippingAmount()),
+				getMoney(currency, transactionRequest.getDutyAmount()),
 				transactionRequest.getShippingFirstName(),
 				transactionRequest.getShippingLastName(),
 				transactionRequest.getShippingCompanyName(),
@@ -377,7 +385,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				transactionRequest.getDescription(),
 				creditCardCreatedBy,
 				creditCard.getPrincipalName(),
-				ccBusiness,
+				ccAccount,
 				creditCard.getGroupName(),
 				creditCard.getProviderUniqueId(),
 				creditCard.getMaskedCardNumber(),

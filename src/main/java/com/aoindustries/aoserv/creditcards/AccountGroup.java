@@ -14,25 +14,25 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 
 /**
- * Uses a <code>Business</code> as a Java <code>Group</code>.
+ * Uses a {@link Account} as a Java {@linux Group}.
  *
  * @author  AO Industries, Inc.
  */
-final public class BusinessGroup implements Group {
+final public class AccountGroup implements Group {
 
-	final private Account business;
+	final private Account account;
 	final private String groupName;
 
-	public BusinessGroup(Account business, String groupName) {
-		this.business = business;
+	public AccountGroup(Account account, String groupName) {
+		this.account = account;
 		this.groupName = groupName;
 	}
 
 	@Override
 	public boolean equals(Object O) {
-		if(O==null || !(O instanceof BusinessGroup)) return false;
-		BusinessGroup other = (BusinessGroup)O;
-		if(!business.equals(other.business)) return false;
+		if(O==null || !(O instanceof AccountGroup)) return false;
+		AccountGroup other = (AccountGroup)O;
+		if(!account.equals(other.account)) return false;
 		if(groupName==null) return other.groupName==null;
 		else return groupName.equals(other.groupName);
 	}
@@ -44,7 +44,7 @@ final public class BusinessGroup implements Group {
 
 	@Override
 	public int hashCode() {
-		return business.hashCode()+(groupName==null ? 0 : (groupName.hashCode()*37));
+		return account.hashCode()+(groupName==null ? 0 : (groupName.hashCode()*37));
 	}
 
 	/**
@@ -72,15 +72,15 @@ final public class BusinessGroup implements Group {
 	}
 
 	/**
-	 * Returns true of user is a AOServConnectorPrincipal whose effective business administrator is
-	 * either this business or a parent business.
+	 * Returns true of user is an {@link AOServConnectorPrincipal} whose effective administrator is
+	 * either this account or a parent account.
 	 */
 	@Override
 	public boolean isMember(Principal user) {
 		try {
 			if(user instanceof AOServConnectorPrincipal) {
 				AOServConnectorPrincipal acp = (AOServConnectorPrincipal)user;
-				return acp.getAOServConnector().getThisBusinessAdministrator().getUsername().getPackage().getBusiness().isBusinessOrParentOf(business);
+				return acp.getAOServConnector().getCurrentAdministrator().getUsername().getPackage().getAccount().isAccountOrParentOf(account);
 			}
 			return false;
 		} catch(IOException | SQLException err) {
@@ -97,10 +97,10 @@ final public class BusinessGroup implements Group {
 	}
 
 	/**
-	 * Gets the business.
+	 * Gets the account.
 	 */
-	public Account getBusiness() {
-		return business;
+	public Account getAccount() {
+		return account;
 	}
 
 	/**

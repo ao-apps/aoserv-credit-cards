@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Creates instances of <code>CreditCardProcessor</code>s based on the processor
- * configurations found in the <code>credit_card_processors</code> table.
+ * Creates instances of {@link CreditCardProcessor} based on the processor
+ * configurations found in {@link com.aoindustries.aoserv.client.payment.ProcessorTable}.
  * Will only create once instance of each processor.  Disabled processors
- * will not be returned.  When multiple processors are enabled for a business,
+ * will not be returned.  When multiple processors are enabled for an account,
  * adheres to the weight provided by the processors.
  *
  * @author  AO Industries, Inc.
@@ -83,20 +83,20 @@ public class CreditCardProcessorFactory {
 	final private static Map<ProcessorKey,CreditCardProcessor> processors = new HashMap<>();
 
 	/**
-	 * Gets an enabled <code>CreditCardProcessor</code> from the list of processors for the business
-	 * of the provided <code>AOServConnector</code>.  When multiple processors are enabled, those with
+	 * Gets an enabled {@link CreditCardProcessor} from the list of processors for the account
+	 * of the provided {@link AOServConnector}.  When multiple processors are enabled, those with
 	 * a higher weight will be returned more often, proportional to weight.  Uses the random source
-	 * of the <code>AOServConnector</code> when selecting the processor.<br>
+	 * of the {@link AOServConnector} when selecting the processor.<br>
 	 * <br>
-	 * Only one instance of each unique <code>CreditCardProcessor</code> (unique based on providerId, classname and all parameters) will be created.<br>
+	 * Only one instance of each unique {@link CreditCardProcessor} (unique based on providerId, classname and all parameters) will be created.<br>
 	 * <br>
-	 * Every processor will use the <code>AOServPersistenceMechanism</code> for its persistence.
+	 * Every processor will use the {@link AOServPersistenceMechanism} for its persistence.
 	 *
-	 * @return  the processor or <code>null</code> if none found
+	 * @return  the processor or {@code null} if none found
 	 */
 	public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
 		// Select the aoserv-client processor before synchronizing on processors
-		List<com.aoindustries.aoserv.client.payment.Processor> ccps = conn.getThisBusinessAdministrator().getUsername().getPackage().getBusiness().getCreditCardProcessors();
+		List<com.aoindustries.aoserv.client.payment.Processor> ccps = conn.getCurrentAdministrator().getUsername().getPackage().getAccount().getCreditCardProcessors();
 		// Count the total weight of enabled processors
 		int totalEnabledProcessors = 0;
 		com.aoindustries.aoserv.client.payment.Processor firstCCP = null;
@@ -139,9 +139,9 @@ public class CreditCardProcessorFactory {
 	/**
 	 * Gets the processor for the given AOServ processor.<br>
 	 * <br>
-	 * Only one instance of each unique <code>CreditCardProcessor</code> (unique based on providerId, classname and all parameters) will be created.<br>
+	 * Only one instance of each unique {@link CreditCardProcessor} (unique based on providerId, classname and all parameters) will be created.<br>
 	 * <br>
-	 * Every processor will use the <code>AOServPersistenceMechanism</code> for its persistence.
+	 * Every processor will use the {@link AOServPersistenceMechanism} for its persistence.
 	 *
 	 * @see  MerchantServicesProviderFactory#getMerchantServicesProvider
 	 */
