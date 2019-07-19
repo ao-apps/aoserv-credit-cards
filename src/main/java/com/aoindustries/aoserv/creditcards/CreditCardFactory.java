@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 /**
- * Creates instances of <code>CreditCard</code>s based on the AOServ object.
+ * Creates instances of {@link CreditCard} based on {@link com.aoindustries.aoserv.client.payment.CreditCard the AOServ object}.
  *
  * @author  AO Industries, Inc.
  */

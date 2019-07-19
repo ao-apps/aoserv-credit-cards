@@ -12,7 +12,7 @@ import java.security.Principal;
 import java.sql.SQLException;
 
 /**
- * Uses an <code>AOServConnector</code> as a Java <code>Principal</code>.
+ * Uses an {@link AOServConnector} as a Java {@link Principal}.
  *
  * @author  AO Industries, Inc.
  */
@@ -31,7 +31,7 @@ final public class AOServConnectorPrincipal implements Principal {
 		try {
 			if(O==null || !(O instanceof AOServConnectorPrincipal)) return false;
 			AOServConnectorPrincipal other = (AOServConnectorPrincipal)O;
-			if(!conn.getThisBusinessAdministrator().equals(other.getAOServConnector().getThisBusinessAdministrator())) return false;
+			if(!conn.getCurrentAdministrator().equals(other.getAOServConnector().getCurrentAdministrator())) return false;
 			if(principalName==null) {
 				return other.principalName==null;
 			} else {
@@ -50,7 +50,7 @@ final public class AOServConnectorPrincipal implements Principal {
 	@Override
 	public int hashCode() {
 		try {
-			return conn.getThisBusinessAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
+			return conn.getCurrentAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
 		} catch(IOException | SQLException err) {
 			throw new WrappedException(err);
 		}
