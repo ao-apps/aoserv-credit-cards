@@ -119,7 +119,7 @@ public class CreditCardProcessorFactory {
 		} else {
 			// Pick a random one based on this weight
 			selectedCCP = null;
-			int randomPosition = AOServConnector.getRandom().nextInt(totalWeight);
+			int randomPosition = AOServConnector.getFastRandom().nextInt(totalWeight);
 			int weightSoFar = 0;
 			for(com.aoindustries.aoserv.client.payment.Processor ccp : ccps) {
 				if(ccp.getEnabled() && ccp.getWeight()>0) {
