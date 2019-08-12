@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 
 /**
- * Uses a {@link Account} as a Java {@linux Group}.
+ * Uses a {@link Account} as a Java {@link Group}.
  *
  * @author  AO Industries, Inc.
  */
