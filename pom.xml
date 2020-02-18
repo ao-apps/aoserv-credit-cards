@@ -89,21 +89,21 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 		<dependencies>
 			<!-- Direct -->
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-credit-cards-api</artifactId><version>1.1.0-POST-SNAPSHOT</version>
+				<groupId>com.aoindustries</groupId><artifactId>ao-credit-cards-api</artifactId><version>1.1.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>3.4.0-SNAPSHOT</version>
+				<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>3.4.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.2.1-SNAPSHOT</version>
+				<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.2.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.83.2-SNAPSHOT</version>
+				<groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.83.2-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<!-- Transitive -->
 			<dependency>
 				<!-- Required until ao-credit-cards-api updates aocode-public -->
-				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>3.2.0-SNAPSHOT</version>
+				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>3.2.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
