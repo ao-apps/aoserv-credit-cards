@@ -27,7 +27,7 @@ Stores [AO Credit Cards](https://github.com/aoindustries/ao-credit-cards) data i
 * [Project Home](https://aoindustries.com/aoserv/credit-cards/)
 * [Changelog](https://aoindustries.com/aoserv/credit-cards/changelog)
 * [API Docs](https://aoindustries.com/aoserv/credit-cards/apidocs/)
-* [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.aoindustries%22%20AND%20a:%22aoserv-credit-cards%22)
+* [Maven Central Repository](https://search.maven.org/artifact/com.aoindustries/aoserv-credit-cards)
 * [GitHub](https://github.com/aoindustries/aoserv-credit-cards)
 
 ## Related Projects
