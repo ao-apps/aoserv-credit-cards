@@ -1,8 +1,9 @@
 /*
- * Copyright 2007-2012, 2015, 2018, 2019 by AO Industries, Inc.,
+ * Copyright 2007-2012, 2015, 2018, 2019, 2020 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
+// TODO: This is not the LGPLv3 header comment
 package com.aoindustries.aoserv.creditcards;
 
 import com.aoindustries.aoserv.client.AOServConnector;
@@ -94,7 +95,7 @@ public class CreditCardProcessorFactory {
 	 *
 	 * @return  the processor or {@code null} if none found
 	 */
-	public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
+	public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException { // TODO: ReflectiveOperationException
 		// Select the aoserv-client processor before synchronizing on processors
 		List<com.aoindustries.aoserv.client.payment.Processor> ccps = conn.getCurrentAdministrator().getUsername().getPackage().getAccount().getCreditCardProcessors();
 		// Count the total weight of enabled processors
@@ -145,7 +146,7 @@ public class CreditCardProcessorFactory {
 	 *
 	 * @see  MerchantServicesProviderFactory#getMerchantServicesProvider
 	 */
-	public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+	public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException { // TODO: ReflectiveOperationException
 		// The key in the map
 		ProcessorKey processorKey = new ProcessorKey(
 			selectedCCP.getProviderId(),
