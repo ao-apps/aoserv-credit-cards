@@ -11,7 +11,6 @@ import com.aoindustries.creditcards.CreditCardProcessor;
 import com.aoindustries.creditcards.MerchantServicesProvider;
 import com.aoindustries.creditcards.MerchantServicesProviderFactory;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +94,7 @@ public class CreditCardProcessorFactory {
 	 *
 	 * @return  the processor or {@code null} if none found
 	 */
-	public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException { // TODO: ReflectiveOperationException
+	public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ReflectiveOperationException, IOException, SQLException {
 		// Select the aoserv-client processor before synchronizing on processors
 		List<com.aoindustries.aoserv.client.payment.Processor> ccps = conn.getCurrentAdministrator().getUsername().getPackage().getAccount().getCreditCardProcessors();
 		// Count the total weight of enabled processors
@@ -146,7 +145,7 @@ public class CreditCardProcessorFactory {
 	 *
 	 * @see  MerchantServicesProviderFactory#getMerchantServicesProvider
 	 */
-	public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException { // TODO: ReflectiveOperationException
+	public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedCCP) throws ReflectiveOperationException {
 		// The key in the map
 		ProcessorKey processorKey = new ProcessorKey(
 			selectedCCP.getProviderId(),
