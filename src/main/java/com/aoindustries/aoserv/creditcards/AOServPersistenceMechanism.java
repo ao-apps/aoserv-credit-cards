@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2013, 2015, 2016, 2017, 2018, 2019 by AO Industries, Inc.,
+ * Copyright 2007-2013, 2015, 2016, 2017, 2018, 2019, 2020 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -11,6 +11,7 @@ import com.aoindustries.aoserv.client.account.Administrator;
 import com.aoindustries.aoserv.client.payment.CountryCode;
 import com.aoindustries.aoserv.client.payment.Payment;
 import com.aoindustries.aoserv.client.payment.Processor;
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.creditcards.AuthorizationResult;
 import com.aoindustries.creditcards.CaptureResult;
 import com.aoindustries.creditcards.CreditCard;
@@ -181,7 +182,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 		AOServConnector conn = getAOServConnector(principal);
 		try {
 			List<com.aoindustries.aoserv.client.payment.CreditCard> aoservCreditCards = conn.getPayment().getCreditCard().getRows();
-			Map<String,CreditCard> map = new LinkedHashMap<>(aoservCreditCards.size() *4/3+1);
+			Map<String,CreditCard> map = AoCollections.newLinkedHashMap(aoservCreditCards.size());
 			for(com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard : aoservCreditCards) {
 				CreditCard copy = newCreditCard(aoservCreditCard);
 				String persistenceUniqueId = copy.getPersistenceUniqueId();
@@ -202,7 +203,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				return new LinkedHashMap<>();
 			} else {
 				List<com.aoindustries.aoserv.client.payment.CreditCard> aoservCreditCards = processor.getCreditCards();
-				Map<String,CreditCard> map = new LinkedHashMap<>(aoservCreditCards.size() *4/3+1);
+				Map<String,CreditCard> map = AoCollections.newLinkedHashMap(aoservCreditCards.size());
 				for(com.aoindustries.aoserv.client.payment.CreditCard aoservCreditCard : aoservCreditCards) {
 					CreditCard copy = newCreditCard(aoservCreditCard);
 					String providerUniqueId = copy.getProviderUniqueId();
