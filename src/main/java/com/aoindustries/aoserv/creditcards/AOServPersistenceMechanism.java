@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -155,8 +155,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			aoservCreditCard.getProviderUniqueId(),
 			null, // cardNumber
 			aoservCreditCard.getCardInfo(),
-			expirationMonth == null ? CreditCard.UNKNOWN_EXPRIATION_MONTH : expirationMonth, // TODO: 2.0: Make nullable Byte
-			expirationYear == null ? CreditCard.UNKNOWN_EXPRIATION_YEAR : expirationYear, // TODO: 2.0: Make nullable Short
+			expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 2.0: Make nullable Byte
+			expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 2.0: Make nullable Short
 			null, // cardCode
 			aoservCreditCard.getFirstName(),
 			aoservCreditCard.getLastName(),
@@ -371,9 +371,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 				}
 			}
 			Byte expirationMonth = creditCard.getExpirationMonth(); // TODO: 2.0: Nullable Byte
-			if(expirationMonth == CreditCard.UNKNOWN_EXPRIATION_MONTH) expirationMonth = null;
+			if(expirationMonth == CreditCard.UNKNOWN_EXPIRATION_MONTH) expirationMonth = null;
 			Short expirationYear = creditCard.getExpirationYear(); // TODO: 2.0: Nullable Short
-			if(expirationYear == CreditCard.UNKNOWN_EXPRIATION_YEAR) expirationYear = null;
+			if(expirationYear == CreditCard.UNKNOWN_EXPIRATION_YEAR) expirationYear = null;
 			Currency currency = transactionRequest.getCurrency();
 			int pkey = conn.getPayment().getPayment().addPayment(
 				processor,
