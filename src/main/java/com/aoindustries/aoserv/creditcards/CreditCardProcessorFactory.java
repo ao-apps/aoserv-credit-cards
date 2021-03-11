@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2015, 2016, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2015, 2016, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -97,7 +97,7 @@ public class CreditCardProcessorFactory {
 		}
 	}
 
-	final private static Map<ProcessorKey,CreditCardProcessor> processors = new HashMap<>();
+	final private static Map<ProcessorKey, CreditCardProcessor> processors = new HashMap<>();
 
 	/**
 	 * Gets an enabled {@link CreditCardProcessor} from the list of processors for the account
