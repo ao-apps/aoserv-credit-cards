@@ -21,7 +21,7 @@
 	</a>
 </p>
 
-Stores [AO Credit Cards](https://github.com/aoindustries/ao-credit-cards) data in the [AOServ Platform](https://aoindustries.com/aoserv/).
+Stores [AO Payments](https://github.com/aoindustries/ao-payments) data in the [AOServ Platform](https://aoindustries.com/aoserv/).
 
 ## Project Links
 * [Project Home](https://aoindustries.com/aoserv/credit-cards/)
@@ -31,7 +31,7 @@ Stores [AO Credit Cards](https://github.com/aoindustries/ao-credit-cards) data i
 * [GitHub](https://github.com/aoindustries/aoserv-credit-cards)
 
 ## Related Projects
-* [AO Credit Cards](https://github.com/aoindustries/ao-credit-cards)
+* [AO Payments](https://github.com/aoindustries/ao-payments)
 
 ## Contact Us
 For questions or support, please [contact us](https://aoindustries.com/contact):
