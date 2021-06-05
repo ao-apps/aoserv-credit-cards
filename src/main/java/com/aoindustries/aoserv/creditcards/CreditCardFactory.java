@@ -22,7 +22,7 @@
  */
 package com.aoindustries.aoserv.creditcards;
 
-import com.aoindustries.creditcards.CreditCard;
+import com.aoapps.payments.CreditCard;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Objects;

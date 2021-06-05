@@ -22,10 +22,10 @@
  */
 package com.aoindustries.aoserv.creditcards;
 
+import com.aoapps.payments.CreditCardProcessor;
+import com.aoapps.payments.MerchantServicesProvider;
+import com.aoapps.payments.MerchantServicesProviderFactory;
 import com.aoindustries.aoserv.client.AOServConnector;
-import com.aoindustries.creditcards.CreditCardProcessor;
-import com.aoindustries.creditcards.MerchantServicesProvider;
-import com.aoindustries.creditcards.MerchantServicesProviderFactory;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
