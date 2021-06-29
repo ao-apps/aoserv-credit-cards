@@ -33,6 +33,7 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 	<packaging>bundle</packaging>
 
 	<properties>
+		<module.name>com.aoindustries.aoserv.payments</module.name>
 		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ</a>
 / <a target="${javadoc.target}" href="${project.url}">Credit Cards</a>]]></javadoc.breadcrumbs>
 		<description.html><![CDATA[Stores <a target="${javadoc.target}" href="https://oss.aoapps.com/payments/">AO Payments</a> data in the <a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ Platform</a>.]]></description.html>
