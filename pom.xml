@@ -93,6 +93,11 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 		<url>https://github.com/aoindustries/aoserv-credit-cards/issues</url>
 	</issueManagement>
 
+	<ciManagement>
+		<system>GitHub Actions</system>
+		<url>https://github.com/aoindustries/aoserv-credit-cards/actions</url>
+	</ciManagement>
+
 	<repositories>
 		<!-- Repository required here, too, so can find parent -->
 		<repository>
