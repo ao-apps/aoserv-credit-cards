@@ -155,8 +155,8 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 			aoservCreditCard.getProviderUniqueId(),
 			null, // cardNumber
 			aoservCreditCard.getCardInfo(),
-			expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 2.0: Make nullable Byte
-			expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 2.0: Make nullable Short
+			expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 3.0: Make nullable Byte
+			expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 3.0: Make nullable Short
 			null, // cardCode
 			aoservCreditCard.getFirstName(),
 			aoservCreditCard.getLastName(),
@@ -370,9 +370,9 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 					ccAccount = storedCard.getAccount();
 				}
 			}
-			Byte expirationMonth = creditCard.getExpirationMonth(); // TODO: 2.0: Nullable Byte
+			Byte expirationMonth = creditCard.getExpirationMonth(); // TODO: 3.0: Nullable Byte
 			if(expirationMonth == CreditCard.UNKNOWN_EXPIRATION_MONTH) expirationMonth = null;
-			Short expirationYear = creditCard.getExpirationYear(); // TODO: 2.0: Nullable Short
+			Short expirationYear = creditCard.getExpirationYear(); // TODO: 3.0: Nullable Short
 			if(expirationYear == CreditCard.UNKNOWN_EXPIRATION_YEAR) expirationYear = null;
 			Currency currency = transactionRequest.getCurrency();
 			int pkey = conn.getPayment().getPayment().addPayment(

@@ -48,8 +48,8 @@ public class CreditCardFactory {
 			creditCard.getProviderUniqueId(),
 			null, // cardNumber
 			creditCard.getCardInfo(),
-			expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 2.0: Nullable Byte
-			expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 2.0: Nullable Short
+			expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 3.0: Nullable Byte
+			expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 3.0: Nullable Short
 			null, // cardCode
 			creditCard.getFirstName(),
 			creditCard.getLastName(),
