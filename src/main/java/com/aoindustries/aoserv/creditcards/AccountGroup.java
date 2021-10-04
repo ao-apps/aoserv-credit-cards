@@ -35,10 +35,10 @@ import java.util.Enumeration;
  *
  * @author  AO Industries, Inc.
  */
-final public class AccountGroup implements Group {
+public final class AccountGroup implements Group {
 
-	final private Account account;
-	final private String groupName;
+	private final Account account;
+	private final String groupName;
 
 	public AccountGroup(Account account, String groupName) {
 		this.account = account;

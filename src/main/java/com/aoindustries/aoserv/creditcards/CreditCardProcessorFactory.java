@@ -46,12 +46,12 @@ import java.util.Objects;
 public class CreditCardProcessorFactory {
 
 	private static class ProcessorKey {
-		final private String providerId;
-		final private String className;
-		final private String param1;
-		final private String param2;
-		final private String param3;
-		final private String param4;
+		private final String providerId;
+		private final String className;
+		private final String param1;
+		private final String param2;
+		private final String param3;
+		private final String param4;
 
 		private ProcessorKey(
 			String providerId,
@@ -97,7 +97,7 @@ public class CreditCardProcessorFactory {
 		}
 	}
 
-	final private static Map<ProcessorKey, CreditCardProcessor> processors = new HashMap<>();
+	private static final Map<ProcessorKey, CreditCardProcessor> processors = new HashMap<>();
 
 	/**
 	 * Gets an enabled {@link CreditCardProcessor} from the list of processors for the account

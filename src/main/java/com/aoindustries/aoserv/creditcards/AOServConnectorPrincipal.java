@@ -33,10 +33,10 @@ import java.sql.SQLException;
  *
  * @author  AO Industries, Inc.
  */
-final public class AOServConnectorPrincipal implements Principal {
+public final class AOServConnectorPrincipal implements Principal {
 
-	final private AOServConnector conn;
-	final private String principalName;
+	private final AOServConnector conn;
+	private final String principalName;
 
 	public AOServConnectorPrincipal(AOServConnector conn, String principalName) {
 		this.conn = conn;
