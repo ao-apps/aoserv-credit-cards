@@ -75,20 +75,20 @@ along with aoserv-credit-cards.  If not, see <http://www.gnu.org/licenses />.
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://github.com/aoindustries/aoserv-credit-cards.git</connection>
-		<developerConnection>scm:git:git@github.com:aoindustries/aoserv-credit-cards.git</developerConnection>
-		<url>https://github.com/aoindustries/aoserv-credit-cards</url>
+		<connection>scm:git:git://github.com/ao-apps/aoserv-credit-cards.git</connection>
+		<developerConnection>scm:git:git@github.com:ao-apps/aoserv-credit-cards.git</developerConnection>
+		<url>https://github.com/ao-apps/aoserv-credit-cards</url>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/aoindustries/aoserv-credit-cards/issues</url>
+		<url>https://github.com/ao-apps/aoserv-credit-cards/issues</url>
 	</issueManagement>
 
 	<ciManagement>
 		<system>GitHub Actions</system>
-		<url>https://github.com/aoindustries/aoserv-credit-cards/actions</url>
+		<url>https://github.com/ao-apps/aoserv-credit-cards/actions</url>
 	</ciManagement>
 
 	<repositories>
