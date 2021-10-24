@@ -46,9 +46,9 @@ public final class AccountGroup implements Group {
 	}
 
 	@Override
-	public boolean equals(Object O) {
-		if(O==null || !(O instanceof AccountGroup)) return false;
-		AccountGroup other = (AccountGroup)O;
+	public boolean equals(Object obj) {
+		if(!(obj instanceof AccountGroup)) return false;
+		AccountGroup other = (AccountGroup)obj;
 		if(!account.equals(other.account)) return false;
 		if(groupName==null) return other.groupName==null;
 		else return groupName.equals(other.groupName);

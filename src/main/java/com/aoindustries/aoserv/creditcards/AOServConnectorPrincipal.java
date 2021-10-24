@@ -44,10 +44,10 @@ public final class AOServConnectorPrincipal implements Principal {
 	}
 
 	@Override
-	public boolean equals(Object O) {
+	public boolean equals(Object obj) {
 		try {
-			if(O==null || !(O instanceof AOServConnectorPrincipal)) return false;
-			AOServConnectorPrincipal other = (AOServConnectorPrincipal)O;
+			if(!(obj instanceof AOServConnectorPrincipal)) return false;
+			AOServConnectorPrincipal other = (AOServConnectorPrincipal)obj;
 			if(!conn.getCurrentAdministrator().equals(other.getAOServConnector().getCurrentAdministrator())) return false;
 			if(principalName==null) {
 				return other.principalName==null;

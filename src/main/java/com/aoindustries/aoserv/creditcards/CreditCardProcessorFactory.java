@@ -82,10 +82,9 @@ public class CreditCardProcessorFactory {
 		}
 
 		@Override
-		public boolean equals(Object O) {
-			if(O==null) return false;
-			if(!(O instanceof ProcessorKey)) return false;
-			ProcessorKey other = (ProcessorKey)O;
+		public boolean equals(Object obj) {
+			if(!(obj instanceof ProcessorKey)) return false;
+			ProcessorKey other = (ProcessorKey)obj;
 			return
 				providerId.equals(other.providerId)
 				&& className.equals(other.className)
