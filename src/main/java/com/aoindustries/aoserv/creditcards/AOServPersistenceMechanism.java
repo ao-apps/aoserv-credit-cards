@@ -62,7 +62,7 @@ import java.util.Objects;
  *
  * @author  AO Industries, Inc.
  */
-public class AOServPersistenceMechanism implements PersistenceMechanism {
+public final class AOServPersistenceMechanism implements PersistenceMechanism {
 
 	private static final AOServPersistenceMechanism instance = new AOServPersistenceMechanism();
 
@@ -75,6 +75,7 @@ public class AOServPersistenceMechanism implements PersistenceMechanism {
 	}
 
 	private AOServPersistenceMechanism() {
+		// Do nothing
 	}
 
 	private static AOServConnector getAOServConnector(Principal principal) throws SQLException {
