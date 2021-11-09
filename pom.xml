@@ -109,9 +109,6 @@ along with aoserv-credit-cards.  If not, see <https://www.gnu.org/licenses/>.
 			<releases>
 				<enabled>false</enabled>
 			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 
