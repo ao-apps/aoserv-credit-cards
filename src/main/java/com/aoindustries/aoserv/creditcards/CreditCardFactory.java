@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2015, 2016, 2018, 2019, 2021  AO Industries, Inc.
+ * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2015, 2016, 2018, 2019, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,7 +32,10 @@ import java.util.Objects;
  *
  * @author  AO Industries, Inc.
  */
-public class CreditCardFactory {
+public final class CreditCardFactory {
+
+	/** Make no instances. */
+	private CreditCardFactory() {throw new AssertionError();}
 
 	/**
 	 * Creates processor CreditCard beans from AOServ CreditCards.
@@ -67,9 +70,5 @@ public class CreditCardFactory {
 			creditCard.getCountryCode().getCode(),
 			creditCard.getDescription()
 		);
-	}
-
-	private CreditCardFactory() {
-		// Make no instances
 	}
 }
