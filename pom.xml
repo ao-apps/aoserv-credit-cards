@@ -37,8 +37,8 @@ along with aoserv-credit-cards.  If not, see <https://www.gnu.org/licenses/>.
 		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ</a>
 / <a target="${javadoc.target}" href="${project.url}">Credit Cards</a>]]></javadoc.breadcrumbs>
 		<description.html><![CDATA[Stores <a target="${javadoc.target}" href="https://oss.aoapps.com/payments/">AO Payments</a> data in the <a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ Platform</a>.]]></description.html>
-		<javadoc.relatedProjects><![CDATA[<div style="float:left; margin: 0 1em">
-			<h2 style="margin-top: 0em">Related Projects</h2>
+		<javadoc.relatedProjects><![CDATA[<div>
+			<h2>Related Projects</h2>
 			<ul>
 				<li><a target="${javadoc.target}" href="https://oss.aoapps.com/payments/">AO Payments</a></li>
 			</ul>
