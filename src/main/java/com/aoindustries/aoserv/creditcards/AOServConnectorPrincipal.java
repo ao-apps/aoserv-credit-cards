@@ -36,63 +36,67 @@ import java.sql.SQLException;
  */
 public final class AOServConnectorPrincipal implements Principal {
 
-	private final AOServConnector conn;
-	private final String principalName;
+  private final AOServConnector conn;
+  private final String principalName;
 
-	public AOServConnectorPrincipal(AOServConnector conn, String principalName) {
-		this.conn = conn;
-		this.principalName = principalName;
-	}
+  public AOServConnectorPrincipal(AOServConnector conn, String principalName) {
+    this.conn = conn;
+    this.principalName = principalName;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		try {
-			if(!(obj instanceof AOServConnectorPrincipal)) return false;
-			AOServConnectorPrincipal other = (AOServConnectorPrincipal)obj;
-			if(!conn.getCurrentAdministrator().equals(other.getAOServConnector().getCurrentAdministrator())) return false;
-			if(principalName==null) {
-				return other.principalName==null;
-			} else {
-				return principalName.equals(other.principalName);
-			}
-		} catch(IOException | SQLException err) {
-			throw new WrappedException(err);
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    try {
+      if (!(obj instanceof AOServConnectorPrincipal)) {
+        return false;
+      }
+      AOServConnectorPrincipal other = (AOServConnectorPrincipal)obj;
+      if (!conn.getCurrentAdministrator().equals(other.getAOServConnector().getCurrentAdministrator())) {
+        return false;
+      }
+      if (principalName == null) {
+        return other.principalName == null;
+      } else {
+        return principalName.equals(other.principalName);
+      }
+    } catch (IOException | SQLException err) {
+      throw new WrappedException(err);
+    }
+  }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+  @Override
+  public String toString() {
+    return getName();
+  }
 
-	@Override
-	public int hashCode() {
-		try {
-			return conn.getCurrentAdministrator().hashCode()+(principalName==null ? 0 : (principalName.hashCode()*37));
-		} catch(IOException | SQLException err) {
-			throw new WrappedException(err);
-		}
-	}
+  @Override
+  public int hashCode() {
+    try {
+      return conn.getCurrentAdministrator().hashCode()+(principalName == null ? 0 : (principalName.hashCode()*37));
+    } catch (IOException | SQLException err) {
+      throw new WrappedException(err);
+    }
+  }
 
-	/**
-	 * Gets the principal name.
-	 */
-	@Override
-	public String getName() {
-		return principalName;
-	}
+  /**
+   * Gets the principal name.
+   */
+  @Override
+  public String getName() {
+    return principalName;
+  }
 
-	/**
-	 * Gets the connector.
-	 */
-	public AOServConnector getAOServConnector() {
-		return conn;
-	}
+  /**
+   * Gets the connector.
+   */
+  public AOServConnector getAOServConnector() {
+    return conn;
+  }
 
-	/**
-	 * Gets the application-provided principal name.
-	 */
-	public String getPrincipalName() {
-		return principalName;
-	}
+  /**
+   * Gets the application-provided principal name.
+   */
+  public String getPrincipalName() {
+    return principalName;
+  }
 }
