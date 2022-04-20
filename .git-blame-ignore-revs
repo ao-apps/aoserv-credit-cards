@@ -1,2 +1,8 @@
 # Significant manual code formatting clean-up…
 4d9c5bf74ed0746785be50cc4498a7962f34a940
+# Generics whitespace consistency
+a4bdd6876c7a86acea3d9516f9bf8ed4f5d8ba51
+# Removed extraneous space at end of line.
+fcfe561b490d0e9dfe055a3969a18169757a8400
+# Removed extraneous space at end of line.
+5854ac2bf123ed7b86dc078a1fb13b81be2d1eac
