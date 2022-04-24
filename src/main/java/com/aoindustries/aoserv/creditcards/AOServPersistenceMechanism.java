@@ -84,9 +84,9 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
       throw new SQLException("principal is null");
     }
     if (!(principal instanceof AOServConnectorPrincipal)) {
-      throw new SQLException("principal is not a AOServConnectorPrincipal: "+principal.getName());
+      throw new SQLException("principal is not a AOServConnectorPrincipal: " + principal.getName());
     }
-    return ((AOServConnectorPrincipal)principal).getAOServConnector();
+    return ((AOServConnectorPrincipal) principal).getAOServConnector();
   }
 
   private static String getPrincipalName(Principal principal) throws SQLException {
@@ -94,9 +94,9 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
       throw new SQLException("principal is null");
     }
     if (!(principal instanceof AOServConnectorPrincipal)) {
-      throw new SQLException("principal is not a AOServConnectorPrincipal: "+principal.getName());
+      throw new SQLException("principal is not a AOServConnectorPrincipal: " + principal.getName());
     }
-    return ((AOServConnectorPrincipal)principal).getPrincipalName();
+    return ((AOServConnectorPrincipal) principal).getPrincipalName();
   }
 
   private static Account getAccount(Group group) throws SQLException {
@@ -106,7 +106,7 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
     if (!(group instanceof AccountGroup)) {
       throw new SQLException("group is not an AccountGroup: " + group.getName());
     }
-    return ((AccountGroup)group).getAccount();
+    return ((AccountGroup) group).getAccount();
   }
 
   private static String getGroupName(Group group) throws SQLException {
@@ -116,7 +116,7 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
     if (!(group instanceof AccountGroup)) {
       throw new SQLException("group is not an AccountGroup: " + group.getName());
     }
-    return ((AccountGroup)group).getGroupName();
+    return ((AccountGroup) group).getGroupName();
   }
 
   @Override
@@ -134,32 +134,32 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
       }
       CountryCode countryCode = conn.getPayment().getCountryCode().get(creditCard.getCountryCode());
       if (countryCode == null) {
-        throw new SQLException("Unable to find CountryCode: "+creditCard.getCountryCode());
+        throw new SQLException("Unable to find CountryCode: " + creditCard.getCountryCode());
       }
       int pkey = account.addCreditCard(
-        processor,
-        creditCard.getGroupName(),
-        creditCard.getMaskedCardNumber(),
-        creditCard.getExpirationMonth(),
-        creditCard.getExpirationYear(),
-        creditCard.getProviderUniqueId(),
-        creditCard.getFirstName(),
-        creditCard.getLastName(),
-        creditCard.getCompanyName(),
-        Email.valueOf(creditCard.getEmail()),
-        creditCard.getPhone(),
-        creditCard.getFax(),
-        creditCard.getCustomerId(),
-        creditCard.getCustomerTaxId(),
-        creditCard.getStreetAddress1(),
-        creditCard.getStreetAddress2(),
-        creditCard.getCity(),
-        creditCard.getState(),
-        creditCard.getPostalCode(),
-        countryCode,
-        principalName,
-        creditCard.getComments(),
-        creditCard.getCardNumber()
+          processor,
+          creditCard.getGroupName(),
+          creditCard.getMaskedCardNumber(),
+          creditCard.getExpirationMonth(),
+          creditCard.getExpirationYear(),
+          creditCard.getProviderUniqueId(),
+          creditCard.getFirstName(),
+          creditCard.getLastName(),
+          creditCard.getCompanyName(),
+          Email.valueOf(creditCard.getEmail()),
+          creditCard.getPhone(),
+          creditCard.getFax(),
+          creditCard.getCustomerId(),
+          creditCard.getCustomerTaxId(),
+          creditCard.getStreetAddress1(),
+          creditCard.getStreetAddress2(),
+          creditCard.getCity(),
+          creditCard.getState(),
+          creditCard.getPostalCode(),
+          countryCode,
+          principalName,
+          creditCard.getComments(),
+          creditCard.getCardNumber()
       );
       return Integer.toString(pkey);
     } catch (ValidationException | IOException e) {
@@ -172,31 +172,31 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
     Short expirationYear = aoservCreditCard.getExpirationYear();
     CountryCode countryCode = aoservCreditCard.getCountryCode();
     return new CreditCard(
-      Integer.toString(aoservCreditCard.getPkey()),
-      aoservCreditCard.getPrincipalName(),
-      aoservCreditCard.getGroupName(),
-      aoservCreditCard.getCreditCardProcessor().getProviderId(),
-      aoservCreditCard.getProviderUniqueId(),
-      null, // cardNumber
-      aoservCreditCard.getCardInfo(),
-      expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 3.0: Make nullable Byte
-      expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 3.0: Make nullable Short
-      null, // cardCode
-      aoservCreditCard.getFirstName(),
-      aoservCreditCard.getLastName(),
-      aoservCreditCard.getCompanyName(),
-      Objects.toString(aoservCreditCard.getEmail(), null),
-      aoservCreditCard.getPhone(),
-      aoservCreditCard.getFax(),
-      aoservCreditCard.getCustomerId(),
-      aoservCreditCard.getCustomerTaxId(),
-      aoservCreditCard.getStreetAddress1(),
-      aoservCreditCard.getStreetAddress2(),
-      aoservCreditCard.getCity(),
-      aoservCreditCard.getState(),
-      aoservCreditCard.getPostalCode(),
-      countryCode == null ? null : countryCode.getCode(),
-      aoservCreditCard.getDescription()
+        Integer.toString(aoservCreditCard.getPkey()),
+        aoservCreditCard.getPrincipalName(),
+        aoservCreditCard.getGroupName(),
+        aoservCreditCard.getCreditCardProcessor().getProviderId(),
+        aoservCreditCard.getProviderUniqueId(),
+        null, // cardNumber
+        aoservCreditCard.getCardInfo(),
+        expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 3.0: Make nullable Byte
+        expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 3.0: Make nullable Short
+        null, // cardCode
+        aoservCreditCard.getFirstName(),
+        aoservCreditCard.getLastName(),
+        aoservCreditCard.getCompanyName(),
+        Objects.toString(aoservCreditCard.getEmail(), null),
+        aoservCreditCard.getPhone(),
+        aoservCreditCard.getFax(),
+        aoservCreditCard.getCustomerId(),
+        aoservCreditCard.getCustomerTaxId(),
+        aoservCreditCard.getStreetAddress1(),
+        aoservCreditCard.getStreetAddress2(),
+        aoservCreditCard.getCity(),
+        aoservCreditCard.getState(),
+        aoservCreditCard.getPostalCode(),
+        countryCode == null ? null : countryCode.getCode(),
+        aoservCreditCard.getDescription()
     );
   }
 
@@ -263,8 +263,8 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
 
   @Override
   public void updateCreditCard(
-    Principal principal,
-    CreditCard creditCard
+      Principal principal,
+      CreditCard creditCard
   ) throws SQLException {
     try {
       AOServConnector conn = getAOServConnector(principal);
@@ -278,25 +278,25 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
         throw new SQLException("Unable to find CountryCode: " + creditCard.getCountryCode());
       }
       aoservCreditCard.update(
-        creditCard.getMaskedCardNumber(),
-        creditCard.getFirstName(),
-        creditCard.getLastName(),
-        creditCard.getCompanyName(),
-        Email.valueOf(creditCard.getEmail()),
-        creditCard.getPhone(),
-        creditCard.getFax(),
-        creditCard.getCustomerId(),
-        creditCard.getCustomerTaxId(),
-        creditCard.getStreetAddress1(),
-        creditCard.getStreetAddress2(),
-        creditCard.getCity(),
-        creditCard.getState(),
-        creditCard.getPostalCode(),
-        countryCode,
-        creditCard.getComments()
+          creditCard.getMaskedCardNumber(),
+          creditCard.getFirstName(),
+          creditCard.getLastName(),
+          creditCard.getCompanyName(),
+          Email.valueOf(creditCard.getEmail()),
+          creditCard.getPhone(),
+          creditCard.getFax(),
+          creditCard.getCustomerId(),
+          creditCard.getCustomerTaxId(),
+          creditCard.getStreetAddress1(),
+          creditCard.getStreetAddress2(),
+          creditCard.getCity(),
+          creditCard.getState(),
+          creditCard.getPostalCode(),
+          countryCode,
+          creditCard.getComments()
       );
     } catch (NumberFormatException err) {
-      throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+      throw new SQLException("Unable to convert providerUniqueId to pkey: " + creditCard.getPersistenceUniqueId(), err);
     } catch (ValidationException | IOException err) {
       throw new SQLException(err);
     }
@@ -304,11 +304,11 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
 
   @Override
   public void updateCardNumber(
-    Principal principal,
-    CreditCard creditCard,
-    String cardNumber,
-    byte expirationMonth,
-    short expirationYear
+      Principal principal,
+      CreditCard creditCard,
+      String cardNumber,
+      byte expirationMonth,
+      short expirationYear
   ) throws SQLException {
     try {
       AOServConnector conn = getAOServConnector(principal);
@@ -318,13 +318,13 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
         throw new SQLException("Unable to find CreditCard: " + id);
       }
       aoservCreditCard.updateCardNumberAndExpiration(
-        CreditCard.maskCreditCardNumber(cardNumber),
-        cardNumber,
-        expirationMonth,
-        expirationYear
+          CreditCard.maskCreditCardNumber(cardNumber),
+          cardNumber,
+          expirationMonth,
+          expirationYear
       );
     } catch (NumberFormatException err) {
-      throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+      throw new SQLException("Unable to convert providerUniqueId to pkey: " + creditCard.getPersistenceUniqueId(), err);
     } catch (IOException err) {
       throw new SQLException(err);
     }
@@ -332,10 +332,10 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
 
   @Override
   public void updateExpiration(
-    Principal principal,
-    CreditCard creditCard,
-    byte expirationMonth,
-    short expirationYear
+      Principal principal,
+      CreditCard creditCard,
+      byte expirationMonth,
+      short expirationYear
   ) throws SQLException {
     try {
       AOServConnector conn = getAOServConnector(principal);
@@ -345,11 +345,11 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
         throw new SQLException("Unable to find CreditCard: " + id);
       }
       aoservCreditCard.updateCardExpiration(
-        expirationMonth,
-        expirationYear
+          expirationMonth,
+          expirationYear
       );
     } catch (NumberFormatException err) {
-      throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+      throw new SQLException("Unable to convert providerUniqueId to pkey: " + creditCard.getPersistenceUniqueId(), err);
     } catch (IOException err) {
       throw new SQLException(err);
     }
@@ -366,7 +366,7 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
       }
       aoservCreditCard.remove();
     } catch (NumberFormatException err) {
-      throw new SQLException("Unable to convert providerUniqueId to pkey: "+creditCard.getPersistenceUniqueId(), err);
+      throw new SQLException("Unable to convert providerUniqueId to pkey: " + creditCard.getPersistenceUniqueId(), err);
     } catch (IOException e) {
       throw new SQLException(e.getLocalizedMessage(), e);
     }
@@ -422,56 +422,56 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
       }
       Currency currency = transactionRequest.getCurrency();
       int pkey = conn.getPayment().getPayment().addPayment(
-        processor,
-        account,
-        groupName,
-        transactionRequest.getTestMode(),
-        transactionRequest.getDuplicateWindow(),
-        transactionRequest.getOrderNumber(),
-        new Money(currency, transactionRequest.getAmount()),
-        getMoney(currency, transactionRequest.getTaxAmount()),
-        transactionRequest.getTaxExempt(),
-        getMoney(currency, transactionRequest.getShippingAmount()),
-        getMoney(currency, transactionRequest.getDutyAmount()),
-        transactionRequest.getShippingFirstName(),
-        transactionRequest.getShippingLastName(),
-        transactionRequest.getShippingCompanyName(),
-        transactionRequest.getShippingStreetAddress1(),
-        transactionRequest.getShippingStreetAddress2(),
-        transactionRequest.getShippingCity(),
-        transactionRequest.getShippingState(),
-        transactionRequest.getShippingPostalCode(),
-        transactionRequest.getShippingCountryCode(),
-        transactionRequest.getEmailCustomer(),
-        Email.valueOf(transactionRequest.getMerchantEmail()),
-        transactionRequest.getInvoiceNumber(),
-        transactionRequest.getPurchaseOrderNumber(),
-        transactionRequest.getDescription(),
-        creditCardCreatedBy,
-        creditCard.getPrincipalName(),
-        ccAccount,
-        creditCard.getGroupName(),
-        creditCard.getProviderUniqueId(),
-        creditCard.getMaskedCardNumber(),
-        expirationMonth,
-        expirationYear,
-        creditCard.getFirstName(),
-        creditCard.getLastName(),
-        creditCard.getCompanyName(),
-        Email.valueOf(creditCard.getEmail()),
-        creditCard.getPhone(),
-        creditCard.getFax(),
-        creditCard.getCustomerId(),
-        creditCard.getCustomerTaxId(),
-        creditCard.getStreetAddress1(),
-        creditCard.getStreetAddress2(),
-        creditCard.getCity(),
-        creditCard.getState(),
-        creditCard.getPostalCode(),
-        creditCard.getCountryCode(),
-        creditCard.getComments(),
-        System.currentTimeMillis(),
-        principalName
+          processor,
+          account,
+          groupName,
+          transactionRequest.getTestMode(),
+          transactionRequest.getDuplicateWindow(),
+          transactionRequest.getOrderNumber(),
+          new Money(currency, transactionRequest.getAmount()),
+          getMoney(currency, transactionRequest.getTaxAmount()),
+          transactionRequest.getTaxExempt(),
+          getMoney(currency, transactionRequest.getShippingAmount()),
+          getMoney(currency, transactionRequest.getDutyAmount()),
+          transactionRequest.getShippingFirstName(),
+          transactionRequest.getShippingLastName(),
+          transactionRequest.getShippingCompanyName(),
+          transactionRequest.getShippingStreetAddress1(),
+          transactionRequest.getShippingStreetAddress2(),
+          transactionRequest.getShippingCity(),
+          transactionRequest.getShippingState(),
+          transactionRequest.getShippingPostalCode(),
+          transactionRequest.getShippingCountryCode(),
+          transactionRequest.getEmailCustomer(),
+          Email.valueOf(transactionRequest.getMerchantEmail()),
+          transactionRequest.getInvoiceNumber(),
+          transactionRequest.getPurchaseOrderNumber(),
+          transactionRequest.getDescription(),
+          creditCardCreatedBy,
+          creditCard.getPrincipalName(),
+          ccAccount,
+          creditCard.getGroupName(),
+          creditCard.getProviderUniqueId(),
+          creditCard.getMaskedCardNumber(),
+          expirationMonth,
+          expirationYear,
+          creditCard.getFirstName(),
+          creditCard.getLastName(),
+          creditCard.getCompanyName(),
+          Email.valueOf(creditCard.getEmail()),
+          creditCard.getPhone(),
+          creditCard.getFax(),
+          creditCard.getCustomerId(),
+          creditCard.getCustomerTaxId(),
+          creditCard.getStreetAddress1(),
+          creditCard.getStreetAddress2(),
+          creditCard.getCity(),
+          creditCard.getState(),
+          creditCard.getPostalCode(),
+          creditCard.getCountryCode(),
+          creditCard.getComments(),
+          System.currentTimeMillis(),
+          principalName
       );
       return Integer.toString(pkey);
     } catch (ValidationException | IOException err) {
@@ -507,15 +507,15 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
         throw new SQLException("Unable to find Payment: " + ccTransactionId);
       }
       if (
-        !ccTransaction.getStatus().equals(Transaction.Status.PROCESSING.name())
-        && !ccTransaction.getStatus().equals(Transaction.Status.AUTHORIZED.name())
+          !ccTransaction.getStatus().equals(Transaction.Status.PROCESSING.name())
+              && !ccTransaction.getStatus().equals(Transaction.Status.AUTHORIZED.name())
       ) {
         throw new SQLException(
-          "CreditCardTransaction #" + ccTransactionId + " must have status "
-          + Transaction.Status.PROCESSING.name()
-          + " or "
-          + Transaction.Status.AUTHORIZED.name()
-          + ", its current status is " + ccTransaction.getStatus()
+            "CreditCardTransaction #" + ccTransactionId + " must have status "
+                + Transaction.Status.PROCESSING.name()
+                + " or "
+                + Transaction.Status.AUTHORIZED.name()
+                + ", its current status is " + ccTransaction.getStatus()
         );
       }
 
@@ -534,35 +534,35 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
 
       TokenizedCreditCard tokenizedCreditCard = authorizationResult.getTokenizedCreditCard();
       ccTransaction.saleCompleted(
-        authorizationCommunicationResult == null ? null : authorizationCommunicationResult.name(),
-        authorizationResult.getProviderErrorCode(),
-        authorizationErrorCode == null ? null : authorizationErrorCode.name(),
-        authorizationResult.getProviderErrorMessage(),
-        authorizationResult.getProviderUniqueId(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementMaskedCardNumber(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementMaskedCardNumber(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementExpiration(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationMonth(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationYear(),
-        authorizationResult.getProviderApprovalResult(),
-        approvalResult == null ? null : approvalResult.name(),
-        authorizationResult.getProviderDeclineReason(),
-        declineReason == null ? null : declineReason.name(),
-        authorizationResult.getProviderReviewReason(),
-        reviewReason == null ? null : reviewReason.name(),
-        authorizationResult.getProviderCvvResult(),
-        cvvResult == null ? null : cvvResult.name(),
-        authorizationResult.getProviderAvsResult(),
-        avsResult == null ? null : avsResult.name(),
-        authorizationResult.getApprovalCode(),
-        transaction.getCaptureTime() == -1 ? null : new Timestamp(transaction.getCaptureTime()),
-        transaction.getCapturePrincipalName(),
-        captureCommunicationResult == null ? null : captureCommunicationResult.name(),
-        captureResult.getProviderErrorCode(),
-        captureErrorCode == null ? null : captureErrorCode.name(),
-        captureResult.getProviderErrorMessage(),
-        captureResult.getProviderUniqueId(),
-        transaction.getStatus().name()
+          authorizationCommunicationResult == null ? null : authorizationCommunicationResult.name(),
+          authorizationResult.getProviderErrorCode(),
+          authorizationErrorCode == null ? null : authorizationErrorCode.name(),
+          authorizationResult.getProviderErrorMessage(),
+          authorizationResult.getProviderUniqueId(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementMaskedCardNumber(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementMaskedCardNumber(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementExpiration(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationMonth(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationYear(),
+          authorizationResult.getProviderApprovalResult(),
+          approvalResult == null ? null : approvalResult.name(),
+          authorizationResult.getProviderDeclineReason(),
+          declineReason == null ? null : declineReason.name(),
+          authorizationResult.getProviderReviewReason(),
+          reviewReason == null ? null : reviewReason.name(),
+          authorizationResult.getProviderCvvResult(),
+          cvvResult == null ? null : cvvResult.name(),
+          authorizationResult.getProviderAvsResult(),
+          avsResult == null ? null : avsResult.name(),
+          authorizationResult.getApprovalCode(),
+          transaction.getCaptureTime() == -1 ? null : new Timestamp(transaction.getCaptureTime()),
+          transaction.getCapturePrincipalName(),
+          captureCommunicationResult == null ? null : captureCommunicationResult.name(),
+          captureResult.getProviderErrorCode(),
+          captureErrorCode == null ? null : captureErrorCode.name(),
+          captureResult.getProviderErrorMessage(),
+          captureResult.getProviderUniqueId(),
+          transaction.getStatus().name()
       );
     } catch (IOException err) {
       throw new SQLException(err);
@@ -594,7 +594,7 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
         throw new SQLException("Unable to find Payment: " + ccTransactionId);
       }
       if (!ccTransaction.getStatus().equals(Transaction.Status.PROCESSING.name())) {
-        throw new SQLException("CreditCardTransaction #"+ccTransactionId+" must have status "+Transaction.Status.PROCESSING.name()+", its current status is "+ccTransaction.getStatus());
+        throw new SQLException("CreditCardTransaction #" + ccTransactionId + " must have status " + Transaction.Status.PROCESSING.name() + ", its current status is " + ccTransaction.getStatus());
       }
 
       AuthorizationResult authorizationResult = transaction.getAuthorizationResult();
@@ -608,28 +608,28 @@ public final class AOServPersistenceMechanism implements PersistenceMechanism {
 
       TokenizedCreditCard tokenizedCreditCard = authorizationResult.getTokenizedCreditCard();
       ccTransaction.authorizeCompleted(
-        authorizationCommunicationResult == null ? null : authorizationCommunicationResult.name(),
-        authorizationResult.getProviderErrorCode(),
-        authorizationErrorCode == null ? null : authorizationErrorCode.name(),
-        authorizationResult.getProviderErrorMessage(),
-        authorizationResult.getProviderUniqueId(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementMaskedCardNumber(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementMaskedCardNumber(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementExpiration(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationMonth(),
-        tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationYear(),
-        authorizationResult.getProviderApprovalResult(),
-        approvalResult == null ? null : approvalResult.name(),
-        authorizationResult.getProviderDeclineReason(),
-        declineReason == null ? null : declineReason.name(),
-        authorizationResult.getProviderReviewReason(),
-        reviewReason == null ? null : reviewReason.name(),
-        authorizationResult.getProviderCvvResult(),
-        cvvResult == null ? null : cvvResult.name(),
-        authorizationResult.getProviderAvsResult(),
-        avsResult == null ? null : avsResult.name(),
-        authorizationResult.getApprovalCode(),
-        transaction.getStatus().name()
+          authorizationCommunicationResult == null ? null : authorizationCommunicationResult.name(),
+          authorizationResult.getProviderErrorCode(),
+          authorizationErrorCode == null ? null : authorizationErrorCode.name(),
+          authorizationResult.getProviderErrorMessage(),
+          authorizationResult.getProviderUniqueId(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementMaskedCardNumber(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementMaskedCardNumber(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getProviderReplacementExpiration(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationMonth(),
+          tokenizedCreditCard == null ? null : tokenizedCreditCard.getReplacementExpirationYear(),
+          authorizationResult.getProviderApprovalResult(),
+          approvalResult == null ? null : approvalResult.name(),
+          authorizationResult.getProviderDeclineReason(),
+          declineReason == null ? null : declineReason.name(),
+          authorizationResult.getProviderReviewReason(),
+          reviewReason == null ? null : reviewReason.name(),
+          authorizationResult.getProviderCvvResult(),
+          cvvResult == null ? null : cvvResult.name(),
+          authorizationResult.getProviderAvsResult(),
+          avsResult == null ? null : avsResult.name(),
+          authorizationResult.getApprovalCode(),
+          transaction.getStatus().name()
       );
     } catch (IOException err) {
       throw new SQLException(err);

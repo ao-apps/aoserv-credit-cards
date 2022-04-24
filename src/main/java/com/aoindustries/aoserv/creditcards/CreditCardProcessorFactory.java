@@ -60,12 +60,12 @@ public final class CreditCardProcessorFactory {
     private final String param4;
 
     private ProcessorKey(
-      String providerId,
-      String className,
-      String param1,
-      String param2,
-      String param3,
-      String param4
+        String providerId,
+        String className,
+        String param1,
+        String param2,
+        String param3,
+        String param4
     ) {
       this.providerId = providerId;
       this.className = className;
@@ -78,12 +78,12 @@ public final class CreditCardProcessorFactory {
     @Override
     public int hashCode() {
       return
-        providerId.hashCode()
-        + className.hashCode() * 7
-        + Objects.hashCode(param1) * 17
-        + Objects.hashCode(param2) * 37
-        + Objects.hashCode(param3) * 103
-        + Objects.hashCode(param4) * 149
+          providerId.hashCode()
+              + className.hashCode() * 7
+              + Objects.hashCode(param1) * 17
+              + Objects.hashCode(param2) * 37
+              + Objects.hashCode(param3) * 103
+              + Objects.hashCode(param4) * 149
       ;
     }
 
@@ -92,14 +92,14 @@ public final class CreditCardProcessorFactory {
       if (!(obj instanceof ProcessorKey)) {
         return false;
       }
-      ProcessorKey other = (ProcessorKey)obj;
+      ProcessorKey other = (ProcessorKey) obj;
       return
-        providerId.equals(other.providerId)
-        && className.equals(other.className)
-        && Objects.equals(param1, other.param1)
-        && Objects.equals(param2, other.param2)
-        && Objects.equals(param3, other.param3)
-        && Objects.equals(param4, other.param4)
+          providerId.equals(other.providerId)
+              && className.equals(other.className)
+              && Objects.equals(param1, other.param1)
+              && Objects.equals(param2, other.param2)
+              && Objects.equals(param3, other.param3)
+              && Objects.equals(param4, other.param4)
       ;
     }
   }
@@ -126,7 +126,7 @@ public final class CreditCardProcessorFactory {
     com.aoindustries.aoserv.client.payment.Processor firstCCP = null;
     int totalWeight = 0;
     for (com.aoindustries.aoserv.client.payment.Processor ccp : ccps) {
-      if (ccp.getEnabled() && ccp.getWeight()>0) {
+      if (ccp.getEnabled() && ccp.getWeight() > 0) {
         totalEnabledProcessors++;
         if (firstCCP == null) {
           firstCCP = ccp;
@@ -150,9 +150,9 @@ public final class CreditCardProcessorFactory {
       int randomPosition = AOServConnector.getFastRandom().nextInt(totalWeight);
       int weightSoFar = 0;
       for (com.aoindustries.aoserv.client.payment.Processor ccp : ccps) {
-        if (ccp.getEnabled() && ccp.getWeight()>0) {
+        if (ccp.getEnabled() && ccp.getWeight() > 0) {
           weightSoFar += ccp.getWeight();
-          if (weightSoFar>randomPosition) {
+          if (weightSoFar > randomPosition) {
             selectedCCP = ccp;
             break;
           }
@@ -178,12 +178,12 @@ public final class CreditCardProcessorFactory {
   public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
     // The key in the map
     ProcessorKey processorKey = new ProcessorKey(
-      selectedCCP.getProviderId(),
-      selectedCCP.getClassName(),
-      selectedCCP.getParam1(),
-      selectedCCP.getParam2(),
-      selectedCCP.getParam3(),
-      selectedCCP.getParam4()
+        selectedCCP.getProviderId(),
+        selectedCCP.getClassName(),
+        selectedCCP.getParam1(),
+        selectedCCP.getParam2(),
+        selectedCCP.getParam3(),
+        selectedCCP.getParam4()
     );
 
     // Now synchronize access to processors
@@ -192,12 +192,12 @@ public final class CreditCardProcessorFactory {
       CreditCardProcessor processorInstance = processors.get(processorKey);
       if (processorInstance == null) {
         MerchantServicesProvider provider = MerchantServicesProviderFactory.getMerchantServicesProvider(
-          selectedCCP.getProviderId(),
-          selectedCCP.getClassName(),
-          selectedCCP.getParam1(),
-          selectedCCP.getParam2(),
-          selectedCCP.getParam3(),
-          selectedCCP.getParam4()
+            selectedCCP.getProviderId(),
+            selectedCCP.getClassName(),
+            selectedCCP.getParam1(),
+            selectedCCP.getParam2(),
+            selectedCCP.getParam3(),
+            selectedCCP.getParam4()
         );
 
         // Create and add to cache

@@ -51,7 +51,7 @@ public final class AccountGroup implements Group {
     if (!(obj instanceof AccountGroup)) {
       return false;
     }
-    AccountGroup other = (AccountGroup)obj;
+    AccountGroup other = (AccountGroup) obj;
     if (!account.equals(other.account)) {
       return false;
     }
@@ -69,7 +69,7 @@ public final class AccountGroup implements Group {
 
   @Override
   public int hashCode() {
-    return account.hashCode()+(groupName == null ? 0 : (groupName.hashCode()*37));
+    return account.hashCode() + (groupName == null ? 0 : (groupName.hashCode() * 37));
   }
 
   /**
@@ -104,7 +104,7 @@ public final class AccountGroup implements Group {
   public boolean isMember(Principal user) {
     try {
       if (user instanceof AOServConnectorPrincipal) {
-        AOServConnectorPrincipal acp = (AOServConnectorPrincipal)user;
+        AOServConnectorPrincipal acp = (AOServConnectorPrincipal) user;
         return acp.getAOServConnector().getCurrentAdministrator().getUsername().getPackage().getAccount().isAccountOrParentOf(account);
       }
       return false;

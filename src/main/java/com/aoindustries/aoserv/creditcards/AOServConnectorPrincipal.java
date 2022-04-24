@@ -50,7 +50,7 @@ public final class AOServConnectorPrincipal implements Principal {
       if (!(obj instanceof AOServConnectorPrincipal)) {
         return false;
       }
-      AOServConnectorPrincipal other = (AOServConnectorPrincipal)obj;
+      AOServConnectorPrincipal other = (AOServConnectorPrincipal) obj;
       if (!conn.getCurrentAdministrator().equals(other.getAOServConnector().getCurrentAdministrator())) {
         return false;
       }
@@ -72,7 +72,7 @@ public final class AOServConnectorPrincipal implements Principal {
   @Override
   public int hashCode() {
     try {
-      return conn.getCurrentAdministrator().hashCode()+(principalName == null ? 0 : (principalName.hashCode()*37));
+      return conn.getCurrentAdministrator().hashCode() + (principalName == null ? 0 : (principalName.hashCode() * 37));
     } catch (IOException | SQLException err) {
       throw new WrappedException(err);
     }

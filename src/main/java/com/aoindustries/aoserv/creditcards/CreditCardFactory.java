@@ -47,31 +47,31 @@ public final class CreditCardFactory {
     Byte expirationMonth = creditCard.getExpirationMonth();
     Short expirationYear = creditCard.getExpirationYear();
     return new CreditCard(
-      Integer.toString(creditCard.getPkey()),
-      creditCard.getPrincipalName(),
-      creditCard.getGroupName(),
-      creditCard.getCreditCardProcessor().getProviderId(),
-      creditCard.getProviderUniqueId(),
-      null, // cardNumber
-      creditCard.getCardInfo(),
-      expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 3.0: Nullable Byte
-      expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 3.0: Nullable Short
-      null, // cardCode
-      creditCard.getFirstName(),
-      creditCard.getLastName(),
-      creditCard.getCompanyName(),
-      Objects.toString(creditCard.getEmail(), null),
-      creditCard.getPhone(),
-      creditCard.getFax(),
-      creditCard.getCustomerId(),
-      creditCard.getCustomerTaxId(),
-      creditCard.getStreetAddress1(),
-      creditCard.getStreetAddress2(),
-      creditCard.getCity(),
-      creditCard.getState(),
-      creditCard.getPostalCode(),
-      creditCard.getCountryCode().getCode(),
-      creditCard.getDescription()
+        Integer.toString(creditCard.getPkey()),
+        creditCard.getPrincipalName(),
+        creditCard.getGroupName(),
+        creditCard.getCreditCardProcessor().getProviderId(),
+        creditCard.getProviderUniqueId(),
+        null, // cardNumber
+        creditCard.getCardInfo(),
+        expirationMonth == null ? CreditCard.UNKNOWN_EXPIRATION_MONTH : expirationMonth, // TODO: 3.0: Nullable Byte
+        expirationYear == null ? CreditCard.UNKNOWN_EXPIRATION_YEAR : expirationYear, // TODO: 3.0: Nullable Short
+        null, // cardCode
+        creditCard.getFirstName(),
+        creditCard.getLastName(),
+        creditCard.getCompanyName(),
+        Objects.toString(creditCard.getEmail(), null),
+        creditCard.getPhone(),
+        creditCard.getFax(),
+        creditCard.getCustomerId(),
+        creditCard.getCustomerTaxId(),
+        creditCard.getStreetAddress1(),
+        creditCard.getStreetAddress2(),
+        creditCard.getCity(),
+        creditCard.getState(),
+        creditCard.getPostalCode(),
+        creditCard.getCountryCode().getCode(),
+        creditCard.getDescription()
     );
   }
 }
