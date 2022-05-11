@@ -26,7 +26,7 @@ package com.aoindustries.aoserv.creditcards;
 import com.aoapps.payments.CreditCardProcessor;
 import com.aoapps.payments.MerchantServicesProvider;
 import com.aoapps.payments.MerchantServicesProviderFactory;
-import com.aoindustries.aoserv.client.AOServConnector;
+import com.aoindustries.aoserv.client.AoservConnector;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -83,8 +83,7 @@ public final class CreditCardProcessorFactory {
               + Objects.hashCode(param1) * 17
               + Objects.hashCode(param2) * 37
               + Objects.hashCode(param3) * 103
-              + Objects.hashCode(param4) * 149
-      ;
+              + Objects.hashCode(param4) * 149;
     }
 
     @Override
@@ -99,8 +98,7 @@ public final class CreditCardProcessorFactory {
               && Objects.equals(param1, other.param1)
               && Objects.equals(param2, other.param2)
               && Objects.equals(param3, other.param3)
-              && Objects.equals(param4, other.param4)
-      ;
+              && Objects.equals(param4, other.param4);
     }
   }
 
@@ -108,28 +106,29 @@ public final class CreditCardProcessorFactory {
 
   /**
    * Gets an enabled {@link CreditCardProcessor} from the list of processors for the account
-   * of the provided {@link AOServConnector}.  When multiple processors are enabled, those with
+   * of the provided {@link AoservConnector}.  When multiple processors are enabled, those with
    * a higher weight will be returned more often, proportional to weight.  Uses the random source
-   * of the {@link AOServConnector} when selecting the processor.<br>
+   * of the {@link AoservConnector} when selecting the processor.<br>
    * <br>
    * Only one instance of each unique {@link CreditCardProcessor} (unique based on providerId, classname and all parameters) will be created.<br>
    * <br>
-   * Every processor will use the {@link AOServPersistenceMechanism} for its persistence.
+   * Every processor will use the {@link AoservPersistenceMechanism} for its persistence.
    *
    * @return  the processor or {@code null} if none found
    */
-  public static CreditCardProcessor getCreditCardProcessor(AOServConnector conn) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
+  public static CreditCardProcessor getCreditCardProcessor(AoservConnector conn)
+      throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException, SQLException {
     // Select the aoserv-client processor before synchronizing on processors
     List<com.aoindustries.aoserv.client.payment.Processor> ccps = conn.getCurrentAdministrator().getUsername().getPackage().getAccount().getCreditCardProcessors();
     // Count the total weight of enabled processors
     int totalEnabledProcessors = 0;
-    com.aoindustries.aoserv.client.payment.Processor firstCCP = null;
+    com.aoindustries.aoserv.client.payment.Processor firstProcessor = null;
     int totalWeight = 0;
     for (com.aoindustries.aoserv.client.payment.Processor ccp : ccps) {
       if (ccp.getEnabled() && ccp.getWeight() > 0) {
         totalEnabledProcessors++;
-        if (firstCCP == null) {
-          firstCCP = ccp;
+        if (firstProcessor == null) {
+          firstProcessor = ccp;
         }
         totalWeight += ccp.getWeight();
       }
@@ -140,30 +139,30 @@ public final class CreditCardProcessorFactory {
     }
 
     // Pick one by weight
-    com.aoindustries.aoserv.client.payment.Processor selectedCCP;
+    com.aoindustries.aoserv.client.payment.Processor selectedProcessor;
     if (totalEnabledProcessors == 1) {
       // One processor shortcut
-      selectedCCP = firstCCP;
+      selectedProcessor = firstProcessor;
     } else {
       // Pick a random one based on this weight
-      selectedCCP = null;
-      int randomPosition = AOServConnector.getFastRandom().nextInt(totalWeight);
+      selectedProcessor = null;
+      int randomPosition = AoservConnector.getFastRandom().nextInt(totalWeight);
       int weightSoFar = 0;
       for (com.aoindustries.aoserv.client.payment.Processor ccp : ccps) {
         if (ccp.getEnabled() && ccp.getWeight() > 0) {
           weightSoFar += ccp.getWeight();
           if (weightSoFar > randomPosition) {
-            selectedCCP = ccp;
+            selectedProcessor = ccp;
             break;
           }
         }
       }
-      if (selectedCCP == null) {
+      if (selectedProcessor == null) {
         throw new AssertionError("With proper implementation of weighted random select above, this should not happen");
       }
     }
 
-    return getCreditCardProcessor(selectedCCP);
+    return getCreditCardProcessor(selectedProcessor);
   }
 
   /**
@@ -171,19 +170,20 @@ public final class CreditCardProcessorFactory {
    * <br>
    * Only one instance of each unique {@link CreditCardProcessor} (unique based on providerId, classname and all parameters) will be created.<br>
    * <br>
-   * Every processor will use the {@link AOServPersistenceMechanism} for its persistence.
+   * Every processor will use the {@link AoservPersistenceMechanism} for its persistence.
    *
    * @see  MerchantServicesProviderFactory#getMerchantServicesProvider
    */
-  public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedCCP) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+  public static CreditCardProcessor getCreditCardProcessor(com.aoindustries.aoserv.client.payment.Processor selectedProcessor)
+      throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
     // The key in the map
     ProcessorKey processorKey = new ProcessorKey(
-        selectedCCP.getProviderId(),
-        selectedCCP.getClassName(),
-        selectedCCP.getParam1(),
-        selectedCCP.getParam2(),
-        selectedCCP.getParam3(),
-        selectedCCP.getParam4()
+        selectedProcessor.getProviderId(),
+        selectedProcessor.getClassName(),
+        selectedProcessor.getParam1(),
+        selectedProcessor.getParam2(),
+        selectedProcessor.getParam3(),
+        selectedProcessor.getParam4()
     );
 
     // Now synchronize access to processors
@@ -192,16 +192,16 @@ public final class CreditCardProcessorFactory {
       CreditCardProcessor processorInstance = processors.get(processorKey);
       if (processorInstance == null) {
         MerchantServicesProvider provider = MerchantServicesProviderFactory.getMerchantServicesProvider(
-            selectedCCP.getProviderId(),
-            selectedCCP.getClassName(),
-            selectedCCP.getParam1(),
-            selectedCCP.getParam2(),
-            selectedCCP.getParam3(),
-            selectedCCP.getParam4()
+            selectedProcessor.getProviderId(),
+            selectedProcessor.getClassName(),
+            selectedProcessor.getParam1(),
+            selectedProcessor.getParam2(),
+            selectedProcessor.getParam3(),
+            selectedProcessor.getParam4()
         );
 
         // Create and add to cache
-        processorInstance = new CreditCardProcessor(provider, AOServPersistenceMechanism.getInstance());
+        processorInstance = new CreditCardProcessor(provider, AoservPersistenceMechanism.getInstance());
         processors.put(processorKey, processorInstance);
       }
       return processorInstance;

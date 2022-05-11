@@ -24,22 +24,22 @@
 package com.aoindustries.aoserv.creditcards;
 
 import com.aoapps.lang.exception.WrappedException;
-import com.aoindustries.aoserv.client.AOServConnector;
+import com.aoindustries.aoserv.client.AoservConnector;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
 
 /**
- * Uses an {@link AOServConnector} as a Java {@link Principal}.
+ * Uses an {@link AoservConnector} as a Java {@link Principal}.
  *
  * @author  AO Industries, Inc.
  */
-public final class AOServConnectorPrincipal implements Principal {
+public final class AoservConnectorPrincipal implements Principal {
 
-  private final AOServConnector conn;
+  private final AoservConnector conn;
   private final String principalName;
 
-  public AOServConnectorPrincipal(AOServConnector conn, String principalName) {
+  public AoservConnectorPrincipal(AoservConnector conn, String principalName) {
     this.conn = conn;
     this.principalName = principalName;
   }
@@ -47,11 +47,11 @@ public final class AOServConnectorPrincipal implements Principal {
   @Override
   public boolean equals(Object obj) {
     try {
-      if (!(obj instanceof AOServConnectorPrincipal)) {
+      if (!(obj instanceof AoservConnectorPrincipal)) {
         return false;
       }
-      AOServConnectorPrincipal other = (AOServConnectorPrincipal) obj;
-      if (!conn.getCurrentAdministrator().equals(other.getAOServConnector().getCurrentAdministrator())) {
+      AoservConnectorPrincipal other = (AoservConnectorPrincipal) obj;
+      if (!conn.getCurrentAdministrator().equals(other.getAoservConnector().getCurrentAdministrator())) {
         return false;
       }
       if (principalName == null) {
@@ -89,7 +89,7 @@ public final class AOServConnectorPrincipal implements Principal {
   /**
    * Gets the connector.
    */
-  public AOServConnector getAOServConnector() {
+  public AoservConnector getAoservConnector() {
     return conn;
   }
 

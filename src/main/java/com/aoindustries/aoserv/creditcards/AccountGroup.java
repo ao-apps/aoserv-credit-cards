@@ -97,15 +97,15 @@ public final class AccountGroup implements Group {
   }
 
   /**
-   * Returns true of user is an {@link AOServConnectorPrincipal} whose effective administrator is
+   * Returns true of user is an {@link AoservConnectorPrincipal} whose effective administrator is
    * either this account or a parent account.
    */
   @Override
   public boolean isMember(Principal user) {
     try {
-      if (user instanceof AOServConnectorPrincipal) {
-        AOServConnectorPrincipal acp = (AOServConnectorPrincipal) user;
-        return acp.getAOServConnector().getCurrentAdministrator().getUsername().getPackage().getAccount().isAccountOrParentOf(account);
+      if (user instanceof AoservConnectorPrincipal) {
+        AoservConnectorPrincipal acp = (AoservConnectorPrincipal) user;
+        return acp.getAoservConnector().getCurrentAdministrator().getUsername().getPackage().getAccount().isAccountOrParentOf(account);
       }
       return false;
     } catch (IOException | SQLException err) {
