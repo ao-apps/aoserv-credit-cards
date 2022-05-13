@@ -30,4 +30,4 @@ module com.aoindustries.aoserv.payments {
   requires com.aoindustries.aoserv.client; // <groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId>
   // Java SE
   requires java.sql;
-} // TODO: Avoiding rewrite-maven-plugin-4.22.2 truncation
+}
