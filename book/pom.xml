@@ -29,11 +29,11 @@ along with aoserv-credit-cards.  If not, see <https://www.gnu.org/licenses/>.
     <relativePath>../../../oss/parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>com.aoindustries</groupId><artifactId>aoserv-credit-cards-book</artifactId><version>3.1.0</version>
+  <groupId>com.aoindustries</groupId><artifactId>aoserv-credit-cards-book</artifactId><version>3.1.0-POST-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
   <properties>
-    <project.build.outputTimestamp>2023-03-08T02:30:09Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-03-08T02:30:45Z</project.build.outputTimestamp>
     <module.name>com.aoindustries.aoserv.payments.book</module.name>
     <!-- These values are copied from the project being documented -->
     <documented.artifactId>aoserv-credit-cards</documented.artifactId>
@@ -83,7 +83,7 @@ along with aoserv-credit-cards.  If not, see <https://www.gnu.org/licenses/>.
     <connection>scm:git:git://github.com/ao-apps/aoserv-credit-cards.git</connection>
     <developerConnection>scm:git:git@github.com:ao-apps/aoserv-credit-cards.git</developerConnection>
     <url>https://github.com/ao-apps/aoserv-credit-cards</url>
-    <tag>aoserv-credit-cards-book-3.1.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
