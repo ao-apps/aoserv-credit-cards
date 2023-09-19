@@ -38,13 +38,14 @@ along with aoserv-credit-cards.  If not, see <https://www.gnu.org/licenses/>.
     <module.name>com.aoindustries.aoserv.payments</module.name>
     <javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ</a>
 / <a target="${javadoc.target}" href="${project.url}">Credit Cards</a>]]></javadoc.breadcrumbs>
-    <description.html><![CDATA[Stores <a target="${javadoc.target}" href="https://oss.aoapps.com/payments/">AO Payments</a> data in the <a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ Platform</a>.]]></description.html>
     <javadoc.relatedProjects><![CDATA[<div>
       <h2>Related Projects</h2>
       <ul>
         <li><a target="${javadoc.target}" href="https://oss.aoapps.com/payments/">AO Payments</a></li>
       </ul>
     </div>]]></javadoc.relatedProjects>
+
+    <description.html><![CDATA[Stores <a target="${javadoc.target}" href="https://oss.aoapps.com/payments/">AO Payments</a> data in the <a target="${javadoc.target}" href="https://aoindustries.com/aoserv/">AOServ Platform</a>.]]></description.html>
     <!-- TODO: Remove once moved to platform.aoapps.com -->
     <google.analytics.trackingId>UA-86871646-1</google.analytics.trackingId>
     <!-- com.aoindustries is on original Sonatype Nexus Repository Manager -->
