@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2013, 2016, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2013, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -41,6 +41,9 @@ public final class AccountGroup implements Group {
   private final Account account;
   private final String groupName;
 
+  /**
+   * Creates a new {@link AccountGroup}.
+   */
   public AccountGroup(Account account, String groupName) {
     this.account = account;
     this.groupName = groupName;
