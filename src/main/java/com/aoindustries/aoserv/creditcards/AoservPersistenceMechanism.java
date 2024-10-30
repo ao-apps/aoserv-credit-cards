@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -57,10 +57,9 @@ import java.util.Objects;
  * Stores the information in the AOServ Platform.  The principal sent in to the
  * methods should be an instance of {@link AoservConnectorPrincipal} and
  * any group should be a {@link AccountGroup}.
- * <p>
- * All operations will be performed using the connector from the principal,
- * therefore the underlying AOServ security model will apply to these calls.
- * </p>
+ *
+ * <p>All operations will be performed using the connector from the principal,
+ * therefore the underlying AOServ security model will apply to these calls.</p>
  *
  * @author  AO Industries, Inc.
  */
@@ -489,9 +488,8 @@ public final class AoservPersistenceMechanism implements PersistenceMechanism {
    *   <li>captureResult</li>
    *   <li>status</li>
    * </ol>
-   * <p>
-   * The current status must be PROCESSING or AUTHORIZED.
-   * </p>
+   *
+   * <p>The current status must be PROCESSING or AUTHORIZED.</p>
    */
   @Override
   public void saleCompleted(Principal principal, Transaction transaction) throws SQLException {
@@ -577,9 +575,8 @@ public final class AoservPersistenceMechanism implements PersistenceMechanism {
    *   <li>authorizationResult</li>
    *   <li>status</li>
    * </ol>
-   * <p>
-   * The current status must be PROCESSING.
-   * </p>
+   *
+   * <p>The current status must be PROCESSING.</p>
    */
   @Override
   public void authorizeCompleted(Principal principal, Transaction transaction) throws SQLException {
