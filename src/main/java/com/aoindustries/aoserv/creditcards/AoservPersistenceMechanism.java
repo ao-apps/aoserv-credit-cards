@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
+ * Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -393,25 +393,25 @@ public final class AoservPersistenceMechanism implements PersistenceMechanism {
       // Try to find the createdBy from the credit card persistence mechanism, otherwise default to current principal
       Administrator creditCardCreatedBy;
       final Account ccAccount;
-        {
-          String ccPersistId = creditCard.getPersistenceUniqueId();
-          if (ccPersistId == null || ccPersistId.length() == 0) {
-            creditCardCreatedBy = conn.getCurrentAdministrator();
-            ccAccount = account;
-          } else {
-            int ccPersistIdInt = Integer.parseInt(ccPersistId);
-            com.aoindustries.aoserv.client.payment.CreditCard storedCard = conn.getPayment().getCreditCard().get(ccPersistIdInt);
-            if (storedCard == null) {
-              throw new SQLException("Unable to find CreditCard: " + ccPersistIdInt);
-            }
-            creditCardCreatedBy = storedCard.getCreatedBy();
-            if (creditCardCreatedBy == null) {
-              // Might have been filtered - this is OK
-              creditCardCreatedBy = conn.getCurrentAdministrator();
-            }
-            ccAccount = storedCard.getAccount();
+      {
+        String ccPersistId = creditCard.getPersistenceUniqueId();
+        if (ccPersistId == null || ccPersistId.length() == 0) {
+          creditCardCreatedBy = conn.getCurrentAdministrator();
+          ccAccount = account;
+        } else {
+          int ccPersistIdInt = Integer.parseInt(ccPersistId);
+          com.aoindustries.aoserv.client.payment.CreditCard storedCard = conn.getPayment().getCreditCard().get(ccPersistIdInt);
+          if (storedCard == null) {
+            throw new SQLException("Unable to find CreditCard: " + ccPersistIdInt);
           }
+          creditCardCreatedBy = storedCard.getCreatedBy();
+          if (creditCardCreatedBy == null) {
+            // Might have been filtered - this is OK
+            creditCardCreatedBy = conn.getCurrentAdministrator();
+          }
+          ccAccount = storedCard.getAccount();
         }
+      }
       Byte expirationMonth = creditCard.getExpirationMonth(); // TODO: 3.0: Nullable Byte
       if (expirationMonth == CreditCard.UNKNOWN_EXPIRATION_MONTH) {
         expirationMonth = null;
