@@ -22,7 +22,7 @@ Stores [AO Payments](https://github.com/ao-apps/ao-payments) data in the [AOServ
 * [Project Home](https://aoindustries.com/aoserv/credit-cards/)
 * [Changelog](https://aoindustries.com/aoserv/credit-cards/changelog)
 * [API Docs](https://aoindustries.com/aoserv/credit-cards/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/artifact/com.aoindustries/aoserv-credit-cards)
+* [Central Repository](https://central.sonatype.com/artifact/com.aoindustries/aoserv-credit-cards)
 * [GitHub](https://github.com/ao-apps/aoserv-credit-cards)
 
 ## Related Projects
