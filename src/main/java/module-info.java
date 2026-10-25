@@ -1,6 +1,6 @@
 /*
  * aoserv-credit-cards - Stores credit card processing data in the AOServ Platform.
- * Copyright (C) 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2021, 2022, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -21,7 +21,6 @@
  * along with aoserv-credit-cards.  If not, see <https://www.gnu.org/licenses/>.
  */
 module com.aoindustries.aoserv.payments {
-  exports com.aoindustries.aoserv.creditcards;
   // Direct
   requires com.aoapps.collections; // <groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
   requires com.aoapps.lang; // <groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId>
@@ -30,4 +29,6 @@ module com.aoindustries.aoserv.payments {
   requires com.aoindustries.aoserv.client; // <groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId>
   // Java SE
   requires java.sql;
+
+  exports com.aoindustries.aoserv.creditcards;
 }
